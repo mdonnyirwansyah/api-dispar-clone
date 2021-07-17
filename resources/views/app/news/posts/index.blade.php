@@ -7,7 +7,7 @@
 @push('javascript')
   <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.25/r-2.2.9/datatables.min.js"></script>
   {!! $dataTable->scripts() !!}
-  @include('app.news.categories.actions')
+  @include('app.news.posts.delete')
 @endpush
 
 @section('content')
@@ -27,7 +27,7 @@
         <div class="card-body">
           <div class="col-12">
             <div class="section-header-button mb-3">
-              <button class="btn btn-primary" onClick="createRecord()">Add New</button>
+              <a href="{{ route('news.posts.create') }}" class="btn btn-primary" onClick="createRecord()">Add New</a>
             </div>
             <hr>
             {!! $dataTable->table(['class' => 'table table-bordered dt-responsive nowrap', 'cellpadding' => '0', 'style' => 'width: 100%']) !!}

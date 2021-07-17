@@ -25,7 +25,7 @@ class NewsCategoryController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required',
+            'name' => 'required|unique:news_categories',
         ]);
 
         if ($validator->passes()) {
@@ -53,12 +53,12 @@ class NewsCategoryController extends Controller
 
     public function update(Request $request, $id)
     {
+        $newsCategory = NewsCategory::find($id);
         $validator = Validator::make($request->all(), [
-            'name' => 'required',
+            'name' => 'required|unique:news_categories,name,' .$newsCategory->id,
         ]);
 
         if ($validator->passes()) {
-            $newsCategory = NewsCategory::find($id);
             $newsCategory->name = $request->name;
             $newsCategory->slug = Str::slug($request->name);
             $newsCategory->save();

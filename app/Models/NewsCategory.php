@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class NewsCategory extends Model
 {
     use HasFactory;
+
+    protected $guarded = [];
+
+    public function newsPosts()
+    {
+        return $this->hasMany(NewsPost::class);
+    }
 }

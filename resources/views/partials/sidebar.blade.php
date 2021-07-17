@@ -14,13 +14,16 @@
     </li>
 
     <li class="menu-header">News</li>
-    <li class="nav-item dropdown {{ request()->is('news/categories') || request()->is('news') ? 'active' : '' }}">
+    <li class="nav-item dropdown {{ request()->is('news/categories') || request()->is('news/posts') ? 'active' : '' }}">
       <a href="#" class="nav-link has-dropdown" data-toggle="dropdown">
         <i class="fas fa-newspaper"></i> <span>News</span>
       </a>
       <ul class="dropdown-menu">
         <li class="{{ request()->is('news/categories') ? 'active' : '' }}">
           <a class="nav-link" href="{{ route('news.categories.index') }}">Categories</a>
+        </li>
+        <li class="{{ request()->is('news/posts') ? 'active' : '' }}">
+          <a class="nav-link" href="{{ route('news.posts.index') }}">Posts</a>
         </li>
       </ul>
     </li>

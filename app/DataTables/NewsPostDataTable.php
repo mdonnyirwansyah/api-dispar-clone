@@ -2,12 +2,12 @@
 
 namespace App\DataTables;
 
-use App\Models\NewsCategory;
+use App\Models\NewsPost;
 use Illuminate\Support\Carbon;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Services\DataTable;
 
-class NewsCategoryDataTable extends DataTable
+class NewsPostDataTable extends DataTable
 {
     /**
      * Build DataTable class.
@@ -20,23 +20,26 @@ class NewsCategoryDataTable extends DataTable
         return datatables()
             ->eloquent($query)
             ->removeColumn('id')
+            ->setRowId(function ($data) {
+                return 'row'.$data->id;
+            })
             ->addIndexColumn()
             ->editColumn('created_at', function ($data) { 
                 $formatedDate = Carbon::createFromFormat('Y-m-d H:i:s', $data->created_at)->format('Y-m-d H:i:s'); 
-                
+
                 return $formatedDate; 
             })
             ->editColumn('updated_at', function ($data) { 
                 $formatedDate = Carbon::createFromFormat('Y-m-d H:i:s', $data->created_at)->format('Y-m-d H:i:s'); 
-                
+
                 return $formatedDate; 
             })
             ->addColumn('action', function ($data) {
                 return '
-                    <button onClick="editRecord('.$data->id.')" class="btn btn-icon">
+                    <a href="'.route('news.posts.edit', $data).'" class="btn btn-icon">
                         <i class="fas fa-pen text-info"></i>
-                    </button>
-                    <button onClick="deleteRecord('.$data->id.')" class="btn btn-icon">
+                    </a> 
+                    <button onClick="deleteRecord('.$data->id.')" id="record'.$data->id.'" data-route="'.route('news.posts.destroy', $data).'" class="btn btn-icon">
                         <i class="fas fa-trash text-danger"></i>
                     </button>
                 ';
@@ -46,12 +49,12 @@ class NewsCategoryDataTable extends DataTable
     /**
      * Get query source of dataTable.
      *
-     * @param \App\Models\NewsCategory $model
+     * @param \App\Models\NewsPost $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(NewsCategory $model)
+    public function query(NewsPost $model)
     {
-        return $model->newQuery();
+        return $model->with('category', 'user');
     }
 
     /**
@@ -62,10 +65,10 @@ class NewsCategoryDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-                    ->setTableId('newscategory-table')
+                    ->setTableId('newspost-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
-                    ->orderBy([1, 'ASC']);
+                    ->orderBy(5);
     }
 
     /**
@@ -77,7 +80,10 @@ class NewsCategoryDataTable extends DataTable
     {
         return [
             Column::make('DT_RowIndex')->title('No')->width(50),
-            Column::make('name'),
+            Column::make('title'),
+            Column::make('category.name')->title('Category'),
+            Column::make('user.name')->title('Author'),
+            Column::make('status'),
             Column::make('created_at'),
             Column::make('updated_at'),
             Column::computed('action')->width(85),
@@ -91,6 +97,6 @@ class NewsCategoryDataTable extends DataTable
      */
     protected function filename()
     {
-        return 'NewsCategory_' . date('YmdHis');
+        return 'NewsPost_' . date('YmdHis');
     }
 }

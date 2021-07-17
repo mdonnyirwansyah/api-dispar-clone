@@ -16,11 +16,13 @@ window.moment = require("moment");
 
 window.toastr = require("toastr");
 
+window.ClassicEditor = require("@ckeditor/ckeditor5-build-classic");
+
 require("popper.js");
 require("bootstrap");
 const swal = require("sweetalert");
+require("select2");
 require("jquery.nicescroll");
-
 require("./stisla/stisla");
 require("./stisla/scripts");
 require("./stisla/custom");
