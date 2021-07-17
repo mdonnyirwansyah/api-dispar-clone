@@ -35,7 +35,7 @@ Copy file .env.example and rename to .env
 
 **Step 5**
 
-create a database with the name dispar_clone
+Create a database with the name dispar_clone
 
 **Step 6**
 
