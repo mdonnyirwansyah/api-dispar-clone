@@ -30,7 +30,7 @@ class NewsPostDataTable extends DataTable
                 return $formatedDate; 
             })
             ->editColumn('updated_at', function ($data) { 
-                $formatedDate = Carbon::createFromFormat('Y-m-d H:i:s', $data->created_at)->format('Y-m-d H:i:s'); 
+                $formatedDate = Carbon::createFromFormat('Y-m-d H:i:s', $data->updated_at)->format('Y-m-d H:i:s'); 
 
                 return $formatedDate; 
             })
@@ -39,7 +39,7 @@ class NewsPostDataTable extends DataTable
                     <a href="'.route('news.posts.edit', $data).'" class="btn btn-icon">
                         <i class="fas fa-pen text-info"></i>
                     </a> 
-                    <button onClick="deleteRecord('.$data->id.')" id="record'.$data->id.'" data-route="'.route('news.posts.destroy', $data).'" class="btn btn-icon">
+                    <button onClick="deleteRecord('.$data->id.')" id="delete-'.$data->id.'" delete-route="'.route('news.posts.destroy', $data).'" class="btn btn-icon">
                         <i class="fas fa-trash text-danger"></i>
                     </button>
                 ';

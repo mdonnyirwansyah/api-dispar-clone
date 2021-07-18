@@ -20,6 +20,9 @@ class NewsCategoryDataTable extends DataTable
         return datatables()
             ->eloquent($query)
             ->removeColumn('id')
+            ->setRowId(function ($data) {
+                return 'row'.$data->id;
+            })
             ->addIndexColumn()
             ->editColumn('created_at', function ($data) { 
                 $formatedDate = Carbon::createFromFormat('Y-m-d H:i:s', $data->created_at)->format('Y-m-d H:i:s'); 
@@ -27,16 +30,16 @@ class NewsCategoryDataTable extends DataTable
                 return $formatedDate; 
             })
             ->editColumn('updated_at', function ($data) { 
-                $formatedDate = Carbon::createFromFormat('Y-m-d H:i:s', $data->created_at)->format('Y-m-d H:i:s'); 
+                $formatedDate = Carbon::createFromFormat('Y-m-d H:i:s', $data->updated_at)->format('Y-m-d H:i:s'); 
                 
                 return $formatedDate; 
             })
             ->addColumn('action', function ($data) {
                 return '
-                    <button onClick="editRecord('.$data->id.')" class="btn btn-icon">
+                    <button onClick="editRecord('.$data->id.')" id="edit-'.$data->id.'" edit-route="'.route('news.categories.edit', $data).'" class="btn btn-icon">
                         <i class="fas fa-pen text-info"></i>
                     </button>
-                    <button onClick="deleteRecord('.$data->id.')" class="btn btn-icon">
+                    <button onClick="deleteRecord('.$data->id.')" id="delete-'.$data->id.'" delete-route="'.route('news.categories.destroy', $data).'" class="btn btn-icon">
                         <i class="fas fa-trash text-danger"></i>
                     </button>
                 ';

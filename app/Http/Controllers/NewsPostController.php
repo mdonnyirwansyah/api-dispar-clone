@@ -26,10 +26,9 @@ class NewsPostController extends Controller
      */
     public function create()
     {
-        $route = route('news.posts.store');
         $newsCategories = NewsCategory::all();
 
-        return view('app.news.posts.create', compact('route', 'newsCategories'));
+        return view('app.news.posts.create', compact('newsCategories'));
     }
 
     public function store(Request $request)
@@ -61,10 +60,9 @@ class NewsPostController extends Controller
 
     public function edit(NewsPost $newsPost)
     {
-        $route = route('news.posts.update', $newsPost);
         $newsCategories = NewsCategory::all();
 
-        return view('app.news.posts.edit', compact('newsCategories', 'route', 'newsPost'));
+        return view('app.news.posts.edit', compact('newsCategories', 'newsPost'));
     }
 
     public function update(Request $request, NewsPost $newsPost)

@@ -18,32 +18,15 @@
     } );
 </script>
 <script>
-    toastr.options = {
-        "closeButton": true,
-        "newestOnTop": false,
-        "progressBar": true,
-        "positionClass": "toast-top-right",
-        "preventDuplicates": false,
-        "onclick": null,
-        "showDuration": "300",
-        "hideDuration": "1000",
-        "timeOut": "5000",
-        "extendedTimeOut": "1000",
-        "showEasing": "swing",
-        "hideEasing": "linear",
-        "showMethod": "fadeIn",
-        "hideMethod": "fadeOut"
-    }
-
     function printErrorMsg (msg) {
         $.each( msg, function ( key, value ) {
-            $("#"+key).addClass("is-invalid");
-            $("#thumbnail-input").addClass("is-invalid");
-            $("."+key+"_err").text(value);
-            $("#"+key).change(function () {
-                $("#"+key).removeClass("is-invalid");
-                $("#thumbnail-input").removeClass("is-invalid");
-                $("#"+key).addClass("is-valid");
+            $('#'+key).addClass('is-invalid');
+            $('#thumbnail-input').addClass('is-invalid');
+            $('.'+key+'_err').text(value);
+            $('#'+key).change(function () {
+                $('#'+key).removeClass('is-invalid');
+                $('#thumbnail-input').removeClass('is-invalid');
+                $('#'+key).addClass('is-valid');
             } );
         });
     }
@@ -52,21 +35,21 @@
         $('.select2').select2({
             theme: 'bootstrap4',
         });
-        $(".custom-file-input").change(function () {
+        $('.custom-file-input').change(function () {
             var fileName = $(this).val().split('\\').slice(-1)[0];
-            $(this).next(".custom-file-label").html(fileName);
+            $(this).next('.custom-file-label').html(fileName);
         })
-        $("#form-action").submit(function (e) {
+        $('#form-action').submit(function (e) {
             e.preventDefault();
             $('#btn').attr('disabled', true);
             $.ajax({
-                url: "{{ $route }}",
-                type: "POST",
+                url: $(this).attr('action'),
+                type: 'POST',
                 data: new FormData(this),
                 contentType: false,
                 cache: false,
                 processData: false,
-                dataType: "json",
+                dataType: 'json',
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
@@ -76,7 +59,7 @@
                         
                         async function redirect() {
                         let promise = new Promise(function(resolve, reject) {
-                            setTimeout(function() { resolve('/news/posts'); }, 5000);
+                            setTimeout(function() { resolve('{{ route("news.posts.index") }}'); }, 3000);
                         });
                         window.location.href = await promise;
                         }
@@ -87,7 +70,7 @@
                     }
                 },
                 error: function(xhr, ajaxOptions, thrownError) {
-                    alert(xhr.status + "\n" + xhr.responseText + "\n" + thrownError);
+                    alert(xhr.status + '\n' + xhr.responseText + '\n' + thrownError);
                 }
             });
         });
@@ -122,9 +105,8 @@
                         <h4>Edit Your Post</h4>
                     </div>
                     <div class="card-body">
-                        <form id="form-action" enctype="multipart/form-data">
+                        <form action="{{ route('news.posts.update', $newsPost) }}" id="form-action" enctype="multipart/form-data">
                             @method('PUT')
-                            @csrf
                             @include('app.news.posts.partials.form')
                         </form>
                     </div>

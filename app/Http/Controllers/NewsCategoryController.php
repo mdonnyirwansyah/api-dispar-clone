@@ -19,7 +19,7 @@ class NewsCategoryController extends Controller
 
     public function create()
     {
-        return response()->json(['success' => view('app.news.categories.partials.form')->render()]);
+        return response()->json(['success' => view('app.news.categories.create')->render()]);
     }
 
     public function store(Request $request)
@@ -41,19 +41,13 @@ class NewsCategoryController extends Controller
         return response()->json(['error' => $validator->errors()]);
     }
 
-    public function edit($id)
+    public function edit(NewsCategory $newsCategory)
     {
-        $newsCategory = NewsCategory::find($id);
-
-        return response()->json([
-            'success' => view('app.news.categories.partials.form', ['update' => true])->render(),
-            'data' => $newsCategory
-        ]);
+        return response()->json(['success' => view('app.news.categories.edit', compact('newsCategory'))->render()]);
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, NewsCategory $newsCategory)
     {
-        $newsCategory = NewsCategory::find($id);
         $validator = Validator::make($request->all(), [
             'name' => 'required|unique:news_categories,name,' .$newsCategory->id,
         ]);
@@ -69,9 +63,8 @@ class NewsCategoryController extends Controller
         return response()->json(['error' => $validator->errors()]);
     }
 
-    public function destroy($id)
+    public function destroy(NewsCategory $newsCategory)
     {
-        $newsCategory = NewsCategory::find($id);
         $newsCategory->delete();
 
         return response()->json(['success' => 'Record has been deleted!']);

@@ -21,9 +21,9 @@ Route::prefix('news')->name('news.')->group(function () {
         Route::get('', [NewsCategoryController::class, 'index'])->name('index');
         Route::get('create', [NewsCategoryController::class, 'create'])->name('create');
         Route::post('', [NewsCategoryController::class, 'store'])->name('store');
-        Route::get('edit/{category:slug}', [NewsCategoryController::class, 'edit'])->name('edit');
-        Route::put('{category:slug}', [NewsCategoryController::class, 'update'])->name('update');
-        Route::delete('{category:slug}', [NewsCategoryController::class, 'destroy'])->name('destroy');
+        Route::get('edit/{news_category:slug}', [NewsCategoryController::class, 'edit'])->name('edit');
+        Route::put('{news_category:slug}', [NewsCategoryController::class, 'update'])->name('update');
+        Route::delete('{news_category:slug}', [NewsCategoryController::class, 'destroy'])->name('destroy');
     });
     Route::prefix('posts')->name('posts.')->group(function () {
         Route::get('', [NewsPostController::class, 'index'])->name('index');
