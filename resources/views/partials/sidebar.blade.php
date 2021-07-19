@@ -12,7 +12,6 @@
         <i class="fas fa-chart-pie"></i> <span>Dashboard</span>
       </a>
     </li>
-
     <li class="menu-header">News</li>
     <li class="nav-item dropdown {{ request()->is('news/categories') || request()->is('news/posts') || request()->is('news/posts/create') ? 'active' : '' }} @isset($newsPost) {{ request()->is('news/posts/edit/'.$newsPost->slug) ? 'active' : '' }} @endisset">
       <a href="#" class="nav-link has-dropdown" data-toggle="dropdown">
@@ -27,7 +26,6 @@
         </li>
       </ul>
     </li>
-    
     <li class="menu-header">Users</li>
     <li>
       <a class="nav-link" href="">

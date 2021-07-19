@@ -84,22 +84,25 @@
 <section class="section">
     <div class="section-header">
         <div class="section-header-back">
-            <a href="{{ route('news.posts.index') }}" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
+            <a href="{{ route('news.posts.index') }}" class="btn btn-icon">
+                <i class="fas fa-arrow-left"></i>
+            </a>
         </div>
         <h1>Edit News Post</h1>
         <div class="section-header-breadcrumb">
-            <div class="breadcrumb-item active"><a href="{{ route('dashboard') }}">Dashboard</a></div>
-            <div class="breadcrumb-item"><a href="{{ route('news.posts.index') }}">News Posts</a></div>
+            <div class="breadcrumb-item active">
+                <a href="{{ route('dashboard') }}">Dashboard</a>
+            </div>
+            <div class="breadcrumb-item">
+                <a href="{{ route('news.posts.index') }}">News Posts</a>
+            </div>
             <div class="breadcrumb-item">Edit News Post</div>
         </div>
     </div>
 
     <div class="section-body">
         <h2 class="section-title">Edit News Post</h2>
-        <p class="section-lead">
-            On this page you can edit a news post and fill in all fields.
-        </p>
-
+        <p class="section-lead">On this page you can edit a news post and fill in all fields.</p>
         <div class="row">
             <div class="col-12">
                 <div class="card">
