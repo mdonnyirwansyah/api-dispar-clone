@@ -4,7 +4,7 @@
         <form action="{{ route('news.categories.update', $newsCategory) }}" id="form-action" enctype="multipart/form-data">
           @method('PUT')
           <div class="modal-header">
-            <h5 class="modal-title" id="modal-title">Edit Category</h5>
+            <h5 class="modal-title" id="modal-title">Edit News Category</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>

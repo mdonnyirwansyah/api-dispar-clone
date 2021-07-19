@@ -14,7 +14,7 @@
     </li>
 
     <li class="menu-header">News</li>
-    <li class="nav-item dropdown {{ request()->is('news/categories') || request()->is('news/posts') ? 'active' : '' }}">
+    <li class="nav-item dropdown {{ request()->is('news/categories') || request()->is('news/posts') || request()->is('news/posts/create') ? 'active' : '' }} @isset($newsPost) {{ request()->is('news/posts/edit/'.$newsPost->slug) ? 'active' : '' }} @endisset">
       <a href="#" class="nav-link has-dropdown" data-toggle="dropdown">
         <i class="fas fa-newspaper"></i> <span>News</span>
       </a>
@@ -22,7 +22,7 @@
         <li class="{{ request()->is('news/categories') ? 'active' : '' }}">
           <a class="nav-link" href="{{ route('news.categories.index') }}">Categories</a>
         </li>
-        <li class="{{ request()->is('news/posts') ? 'active' : '' }}">
+        <li class="{{ request()->is('news/posts') || request()->is('news/posts/create') ? 'active' : '' }} @isset($newsPost) {{ request()->is('news/posts/edit/'.$newsPost->slug) ? 'active' : '' }} @endisset">
           <a class="nav-link" href="{{ route('news.posts.index') }}">Posts</a>
         </li>
       </ul>

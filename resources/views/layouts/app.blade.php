@@ -1,6 +1,6 @@
 @extends('layouts.skeleton')
 
-@section('app')
+@section('body')
   <div class="main-wrapper">
     <div class="navbar-bg"></div>
     <nav class="navbar navbar-expand-lg main-navbar">

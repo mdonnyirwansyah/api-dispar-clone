@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'News Categories')
+
 @push('stylesheet')
   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.25/r-2.2.9/datatables.min.css"/>
 @endpush
@@ -13,16 +15,15 @@
 @section('content')
   <section class="section">
     <div class="section-header">
-      <h1><span class="text-capitalize">{{ $title }}</span></h1>
+      <h1>News Categories</h1>
       <div class="section-header-breadcrumb">
         <div class="breadcrumb-item active"><a href="{{ route('dashboard') }}">Dashboard</a></div>
-        <div class="breadcrumb-item"><a href="#">News</a></div>
-        <div class="breadcrumb-item"><span class="text-capitalize">{{ $title }}</span></div>
+        <div class="breadcrumb-item">News Categories</div>
       </div>
     </div>
     <div class="section-body">
-      <h2 class="section-title">List of <span class="text-capitalize">{{ $title }}</span></h2>
-      <p class="section-lead">This page is for managing <span class="text-lowercase">{{ $title }}</span>.</p>
+      <h2 class="section-title">List of News Categories</h2>
+      <p class="section-lead">This page is for managing news categories.</p>
       <div class="card">
         <div class="card-body">
           <div class="col-12">

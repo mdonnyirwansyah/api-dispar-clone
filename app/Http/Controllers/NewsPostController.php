@@ -14,9 +14,7 @@ class NewsPostController extends Controller
 {
     public function index(NewsPostDataTable $dataTable)
     {
-        $title = 'Posts';
-
-        return $dataTable->render('app.news.posts.index', compact('title'));
+        return $dataTable->render('app.news.posts.index');
     }
 
     /**

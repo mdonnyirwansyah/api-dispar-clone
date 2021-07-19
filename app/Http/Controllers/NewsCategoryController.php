@@ -12,9 +12,7 @@ class NewsCategoryController extends Controller
 {
     public function index(NewsCategoryDataTable $dataTable)
     {
-        $title = 'Categories';
-
-        return $dataTable->render('app.news.categories.index', compact('title'));
+        return $dataTable->render('app.news.categories.index');
     } 
 
     public function create()

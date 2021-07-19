@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Create New News Post')
+
 @push('javascript')
 <script>
     ClassicEditor
@@ -78,18 +80,18 @@
         <div class="section-header-back">
             <a href="{{ route('news.posts.index') }}" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
         </div>
-        <h1>Create New Post</h1>
+        <h1>Create New News Post</h1>
         <div class="section-header-breadcrumb">
             <div class="breadcrumb-item active"><a href="{{ route('dashboard') }}">Dashboard</a></div>
-            <div class="breadcrumb-item"><a href="{{ route('news.posts.index') }}">Posts</a></div>
-            <div class="breadcrumb-item">Create New Post</div>
+            <div class="breadcrumb-item"><a href="{{ route('news.posts.index') }}">News Posts</a></div>
+            <div class="breadcrumb-item">Create New News Post</div>
         </div>
     </div>
 
     <div class="section-body">
-        <h2 class="section-title">Create New Post</h2>
+        <h2 class="section-title">Create New News Post</h2>
         <p class="section-lead">
-            On this page you can create a new post and fill in all fields.
+            On this page you can create a new news post and fill in all fields.
         </p>
 
         <div class="row">

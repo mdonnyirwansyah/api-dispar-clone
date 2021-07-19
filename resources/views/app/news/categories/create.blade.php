@@ -3,7 +3,7 @@
       <div class="modal-content">
         <form action="{{ route('news.categories.store') }}" id="form-action" enctype="multipart/form-data">
           <div class="modal-header">
-            <h5 class="modal-title" id="modal-title">Create New Category</h5>
+            <h5 class="modal-title" id="modal-title">Create New News Category</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
