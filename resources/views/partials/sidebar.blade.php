@@ -33,7 +33,7 @@
       </a>
     </li>
     <li class="menu-header">User</li>
-    <li class="nav-item dropdown {{ request()->is('user/profile-information') || request()->is('user/posts') || request()->is('user/password') ? 'active' : '' }}">
+    <li class="nav-item dropdown {{ request()->is('user/profile-information') || request()->is('user/password') || request()->is('user/two-factor-authentication') ? 'active' : '' }}">
       <a href="#" class="nav-link has-dropdown" data-toggle="dropdown">
         <i class="fas fa-user-cog"></i> <span>User</span>
       </a>
