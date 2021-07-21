@@ -24,7 +24,7 @@
                     </span>
                 @enderror
             </div>
-            <button type="submit" class="btn btn-lg btn-block btn-primary">{{ __('Login') }}</button>
+            <button type="submit" class="btn btn-lg btn-block btn-primary">{{ __('Submit') }}</button>
         </form>
     </div>
 </div>
