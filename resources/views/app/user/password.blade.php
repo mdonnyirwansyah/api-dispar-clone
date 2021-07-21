@@ -2,12 +2,22 @@
 
 @section('title', 'Update Password')
 
+@push('javascript')
+@if(session()->has('status'))
+<script>
+  toastr.success("{{ __('Password has been updated') }}", 'Congratulations,');
+</script>
+@endif
+@endpush
+
 @section('content')
 <section class="section">
   <div class="section-header">
     <h1>Update Password</h1>
     <div class="section-header-breadcrumb">
-      <div class="breadcrumb-item active"><a href="{{ route('dashboard') }}">Dashboard</a></div>
+      <div class="breadcrumb-item active">
+        <a href="{{ route('dashboard') }}">Dashboard</a>
+      </div>
       <div class="breadcrumb-item">Update Password</div>
     </div>
   </div>

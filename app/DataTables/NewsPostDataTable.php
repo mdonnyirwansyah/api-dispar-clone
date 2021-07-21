@@ -24,15 +24,18 @@ class NewsPostDataTable extends DataTable
                 return 'row'.$data->id;
             })
             ->addIndexColumn()
-            ->editColumn('created_at', function ($data) { 
-                $formatedDate = Carbon::createFromFormat('Y-m-d H:i:s', $data->created_at)->format('Y-m-d H:i:s'); 
-
-                return $formatedDate; 
+            ->addColumn('category', function ($data) {
+                return $data->category->name;
             })
-            ->editColumn('updated_at', function ($data) { 
-                $formatedDate = Carbon::createFromFormat('Y-m-d H:i:s', $data->updated_at)->format('Y-m-d H:i:s'); 
-
-                return $formatedDate; 
+            ->addColumn('author', function ($data) {
+                return $data->author['name'];
+            })
+            ->addColumn('editor', function ($data) {
+                if ($data->editor_id) {
+                    return $data->editor['name'];
+                } else {
+                    return '';
+                }
             })
             ->addColumn('action', function ($data) {
                 return '
@@ -43,6 +46,23 @@ class NewsPostDataTable extends DataTable
                         <i class="fas fa-trash text-danger"></i>
                     </button>
                 ';
+            })
+            ->editColumn('editor', function ($data) {
+                if ($data->editor_id) {
+                    return $data->editor['name'];
+                } else {
+                    return '';
+                }
+            })
+            ->editColumn('created_at', function ($data) { 
+                $formatedDate = Carbon::createFromFormat('Y-m-d H:i:s', $data->created_at)->format('Y-m-d H:i:s'); 
+
+                return $formatedDate; 
+            })
+            ->editColumn('updated_at', function ($data) { 
+                $formatedDate = Carbon::createFromFormat('Y-m-d H:i:s', $data->updated_at)->format('Y-m-d H:i:s'); 
+
+                return $formatedDate; 
             });
     }
 
@@ -54,7 +74,7 @@ class NewsPostDataTable extends DataTable
      */
     public function query(NewsPost $model)
     {
-        return $model->with('category', 'user');
+        return $model->newQuery();
     }
 
     /**
@@ -81,8 +101,9 @@ class NewsPostDataTable extends DataTable
         return [
             Column::make('DT_RowIndex')->title('No')->width(50),
             Column::make('title'),
-            Column::make('category.name')->title('Category'),
-            Column::make('user.name')->title('Author'),
+            Column::computed('category'),
+            Column::computed('author'),
+            Column::computed('editor'),
             Column::make('status'),
             Column::make('created_at'),
             Column::make('updated_at'),

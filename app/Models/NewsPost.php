@@ -21,8 +21,13 @@ class NewsPost extends Model
         return $this->belongsTo(NewsCategory::class);
     }
     
-    public function user()
+    public function author()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'author_id');
+    }
+
+    public function editor()
+    {
+        return $this->belongsTo(User::class, 'editor_id');
     }
 }

@@ -6,6 +6,7 @@ use App\DataTables\NewsPostDataTable;
 use App\Models\NewsCategory;
 use App\Models\NewsPost;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -45,7 +46,7 @@ class NewsPostController extends Controller
             $newsPost->category_id = $request->category;
             $newsPost->content = $request->content;
             $newsPost->source = $request->source;
-            $newsPost->user_id = 1;
+            $newsPost->author_id = Auth::user()->id;
             $newsPost->thumbnail = $request->file('thumbnail')->store('images/news');
             $newsPost->slug = Str::slug($request->title);
             $newsPost->save();
@@ -84,6 +85,12 @@ class NewsPostController extends Controller
             $thumbnail = null;
         }
 
+        if ($newsPost->editor) {
+            $editor = $newsPost->editor;
+        } else {
+            $editor = Auth::user()->id;
+        }
+
         if ($validator->passes()) {
             $newsPost->title = $request->title;
             $newsPost->title_en = $request->title_en;
@@ -91,7 +98,7 @@ class NewsPostController extends Controller
             $newsPost->content = $request->content;
             $newsPost->content_en = $request->content_en;
             $newsPost->source = $request->source;
-            $newsPost->user_id = 1;
+            $newsPost->editor_id = $editor;
             $newsPost->thumbnail = $thumbnail;
             $newsPost->slug = Str::slug($request->title);
             $newsPost->save();

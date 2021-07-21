@@ -2,12 +2,22 @@
 
 @section('title', 'Profile Information')
 
+@push('javascript')
+@if(session()->has('status'))
+<script>
+  toastr.success("{{ __('Profile Information has been updated') }}", 'Congratulations,');
+</script>
+@endif
+@endpush
+
 @section('content')
 <section class="section">
   <div class="section-header">
     <h1>Profile Information</h1>
     <div class="section-header-breadcrumb">
-      <div class="breadcrumb-item active"><a href="{{ route('dashboard') }}">Dashboard</a></div>
+      <div class="breadcrumb-item active">
+        <a href="{{ route('dashboard') }}">Dashboard</a>
+      </div>
       <div class="breadcrumb-item">Profile Information</div>
     </div>
   </div>

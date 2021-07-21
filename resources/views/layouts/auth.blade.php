@@ -9,14 +9,18 @@
           <img src="{{ asset('assets/img/stisla-fill.svg') }}" alt="logo" width="100" class="shadow-light rounded-circle">
         </div>
         @if(session()->has('info'))
-          <div class="alert alert-primary">
-            {{ session()->get('info') }}
-          </div>
+        <div class="alert alert-primary">
+          {{ session()->get('info') }}
+        </div>
         @endif
-        @if(session()->has('status'))
-          <div class="alert alert-info">
-            {{ session()->get('status') }}
-          </div>
+        @if (session('status') == 'verification-link-sent')
+        <div class="alert alert-info">
+            {{ __('A fresh verification link has been sent to your email address.') }}
+        </div>
+        @elseif(session()->has('status'))
+        <div class="alert alert-info">
+          {{ session()->get('status') }}
+        </div>
         @endif
         @yield('content')
         <div class="simple-footer">

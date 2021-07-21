@@ -25,14 +25,20 @@ class NewsPostFactory extends Factory
     public function definition()
     {
         $title = $this->faker->unique()->sentence($nbWords = 6, $variableNbWords = true);
-
+        $status = $this->faker->randomElement(['Published', 'Draft', 'Pending']);
+        if ($status == 'Published') {
+            $time = now();
+        } else {
+            $time = null;
+        }
         return [
             'title' => $title,
             'category_id' => $this->faker->randomElement([1, 2, 3, 4]),
             'content' => $this->faker->paragraph($nbSentences = 40, $variableNbSentences = true),
-            'user_id'=> User::factory(),
+            'author_id'=> User::factory(),
             'source' => $this->faker->company,
-            'status' => $this->faker->randomElement(['Published', 'Draft', 'Pending']),
+            'status' => $status,
+            'published_at' => $time,
             'slug' => Str::slug($title)
         ];
     }

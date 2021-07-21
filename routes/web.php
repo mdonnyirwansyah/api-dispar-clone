@@ -13,8 +13,10 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::middleware(['auth'])->group(function () {
+Route::get('two-factor-recovery', function () {
+    return view('auth.two-factor-recovery');
+})->name('two-factor-recovery');
+Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/', DashboardController::class)->name('dashboard');
 
     Route::prefix('news')->name('news.')->group(function () {
@@ -37,11 +39,14 @@ Route::middleware(['auth'])->group(function () {
     });
 
     Route::prefix('user')->name('user-')->group(function () {
-        Route::get('profil-information', function () {
+        Route::get('profile-information', function () {
             return view('app.user.profile-information');
         })->name('profile-information');
         Route::get('password', function () {
             return view('app.user.password');
         })->name('password');
+        Route::get('two-factor-authentication', function () {
+            return view('app.user.two-factor-authentication');
+        })->name('two-factor-authentication');
     });
 });

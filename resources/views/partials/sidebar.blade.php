@@ -32,5 +32,22 @@
         <i class="fas fa-users"></i> <span>Users</span>
       </a>
     </li>
+    <li class="menu-header">User</li>
+    <li class="nav-item dropdown {{ request()->is('user/profile-information') || request()->is('user/posts') || request()->is('user/password') ? 'active' : '' }}">
+      <a href="#" class="nav-link has-dropdown" data-toggle="dropdown">
+        <i class="fas fa-user-cog"></i> <span>User</span>
+      </a>
+      <ul class="dropdown-menu">
+        <li class="{{ request()->is('user/profile-information') ? 'active' : '' }}">
+          <a class="nav-link" href="{{ route('user-profile-information') }}">Profile Information</a>
+        </li>
+        <li class="{{ request()->is('user/password') ? 'active' : '' }}">
+          <a class="nav-link" href="{{ route('user-password') }}">Update Password</a>
+        </li>
+        <li class="{{ request()->is('user/two-factor-authentication') ? 'active' : '' }}">
+          <a class="nav-link" href="{{ route('user-two-factor-authentication') }}">Two Factor Authentication</a>
+        </li>
+      </ul>
+    </li>
   </ul>
 </aside>

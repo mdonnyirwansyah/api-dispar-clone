@@ -6,10 +6,11 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Fortify\TwoFactorAuthenticatable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, TwoFactorAuthenticatable;
 
     /**
      * The attributes that are mass assignable.
@@ -41,8 +42,13 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
     
-    public function newsPosts()
+    public function newsPostsAuthor()
     {
-        return $this->hasMany(NewsPost::class);
+        return $this->hasMany(NewsPost::class, 'author_id');
+    }
+
+    public function newsPostsEditor()
+    {
+        return $this->hasMany(NewsPost::class, 'editor_id');
     }
 }

@@ -26,7 +26,7 @@
   <li class="dropdown">
     <a href="#" data-toggle="dropdown" class="nav-link notification-toggle nav-link-lg nav-link-user d-flex">
       <i class="fas fa-user-circle"></i>
-      <div class="d-sm-none d-lg-inline-block ml-1">Hi, {{ Auth::user()->name }}</div>
+      <div class="d-sm-none d-lg-inline-block ml-1">{{ Auth::user()->name }}</div>
     </a>
     <div class="dropdown-menu dropdown-menu-right">
       <div class="dropdown-title">Welcome, {{ Auth::user()->name }}</div>

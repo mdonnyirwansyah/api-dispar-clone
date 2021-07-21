@@ -95,14 +95,11 @@
     </div>
 
     <div class="section-body">
-        <h2 class="section-title">Create New News Post</h2>
+        <h2 class="section-title">Write Your Post</h2>
         <p class="section-lead">On this page you can create a new news post and fill in all fields.</p>
         <div class="row">
             <div class="col-12">
                 <div class="card">
-                    <div class="card-header">
-                        <h4>Write Your Post</h4>
-                    </div>
                     <div class="card-body">
                         <form action="{{ route('news.posts.store') }}" id="form-action" enctype="multipart/form-data">
                             @include('app.news.posts.partials.form')
