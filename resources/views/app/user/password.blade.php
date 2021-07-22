@@ -13,6 +13,9 @@
 @section('content')
 <section class="section">
   <div class="section-header">
+    <div class="section-header-back">
+      <a href="{{ route('dashboard') }}" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
+    </div>
     <h1>Update Password</h1>
     <div class="section-header-breadcrumb">
       <div class="breadcrumb-item active">
@@ -22,42 +25,72 @@
     </div>
   </div>
   <div class="section-body">
-    <h2 class="section-title">Update Password</h2>
-    <p class="section-lead">This page is for managing password.</p>
-    <div class="card">
-      <form method="POST" action="{{ route('user-password.update') }}">
-        @method('PUT')
-        @csrf
-        <div class="card-body">
-          <div class="row">                               
-            <div class="form-group col-md-12 col-12">
-              <label for="current_password">Current Password</label>
-              <input type="password" class="form-control @error('current_password', 'updatePassword') is-invalid @enderror" name="current_password" id="current_password">
-              @error('current_password', 'updatePassword')
-              <span class="invalid-feedback" role="alert">
-                  <small>{{ $message }}</small>
-              </span>
-              @enderror
-            </div>
-            <div class="form-group col-md-6 col-12">
-              <label for="password">New Password</label>
-              <input type="password" class="form-control @error('password', 'updatePassword') is-invalid @enderror" name="password" id="password">
-              @error('password', 'updatePassword')
-              <span class="invalid-feedback" role="alert">
-                  <small>{{ $message }}</small>
-              </span>
-              @enderror
-            </div>
-            <div class="form-group col-md-6 col-12">
-                <label for="password_confirmation">Confirm Password</label>
-                <input type="password" class="form-control" name="password_confirmation" id="password_confirmation">
-            </div>
+    <h2 class="section-title">Change Your Password</h2>
+    <p class="section-lead">Ensure your account is using a long, random password to stay secure.</p>
+
+    <div class="row">
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-header">
+            <h4 class="text-dark">Jump To</h4>
+          </div>
+          <div class="card-body">
+            <ul class="nav nav-pills flex-column">
+              <li class="nav-item">
+                <a href="{{ route('user-profile-information') }}" class="nav-link text-dark">Profile Information</a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ route('user-password') }}" class="nav-link active">Update Password</a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ route('user-two-factor-authentication') }}" class="nav-link text-dark">Two Factor Authentication</a>
+              </li>
+            </ul>
           </div>
         </div>
-        <div class="card-footer text-right bg-whitesmoke">
-            <button class="btn btn-primary" type="submit">Save Changes</button>
-        </div>
-      </form>
+      </div>
+      <div class="col-md-8">
+        <form method="POST" action="{{ route('user-password.update') }}">
+          @method('PUT')
+          @csrf
+          <div class="card" id="settings-card">
+            <div class="card-body">
+              <div class="form-group row align-items-center">
+                <label for="current_password" class="form-control-label col-sm-3 text-md-right">Current Password</label>
+                <div class="col-sm-6 col-md-9">
+                  <input type="password" class="form-control @error('current_password', 'updatePassword') is-invalid @enderror" name="current_password" id="current_password">
+                  @error('current_password', 'updatePassword')
+                  <span class="invalid-feedback" role="alert">
+                      <small>{{ $message }}</small>
+                  </span>
+                  @enderror
+                </div>
+              </div>
+              <div class="form-group row align-items-center">
+                <label for="password" class="form-control-label col-sm-3 text-md-right">New Password</label>
+                <div class="col-sm-6 col-md-9">
+                  <input type="password" class="form-control @error('password', 'updatePassword') is-invalid @enderror" name="password" id="password">
+                  @error('password', 'updatePassword')
+                  <span class="invalid-feedback" role="alert">
+                      <small>{{ $message }}</small>
+                  </span>
+                  @enderror
+                </div>
+              </div>
+              <div class="form-group row align-items-center">
+                <label for="password_confirmation" class="form-control-label col-sm-3 text-md-right">Confirm Password</label>
+                <div class="col-sm-6 col-md-9">
+                  <input type="password" class="form-control" name="password_confirmation" id="password_confirmation">
+                </div>
+              </div>
+            </div>
+            <div class="card-footer bg-whitesmoke text-md-right">
+              <button class="btn btn-primary" type="submit">Save Changes</button>
+              <button class="btn btn-secondary" type="reset">Reset</button>
+            </div>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 </section>

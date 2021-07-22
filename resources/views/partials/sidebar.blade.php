@@ -13,7 +13,7 @@
       </a>
     </li>
     <li class="menu-header">News</li>
-    <li class="nav-item dropdown {{ request()->is('news/categories') || request()->is('news/posts') || request()->is('news/posts/create') ? 'active' : '' }} @isset($newsPost) {{ request()->is('news/posts/edit/'.$newsPost->slug) ? 'active' : '' }} @endisset">
+    <li class="nav-item dropdown {{ request()->is('news/*') ? 'active' : '' }}">
       <a href="#" class="nav-link has-dropdown" data-toggle="dropdown">
         <i class="fas fa-newspaper"></i> <span>News</span>
       </a>
@@ -21,7 +21,7 @@
         <li class="{{ request()->is('news/categories') ? 'active' : '' }}">
           <a class="nav-link" href="{{ route('news.categories.index') }}">Categories</a>
         </li>
-        <li class="{{ request()->is('news/posts') || request()->is('news/posts/create') ? 'active' : '' }} @isset($newsPost) {{ request()->is('news/posts/edit/'.$newsPost->slug) ? 'active' : '' }} @endisset">
+        <li class="{{ request()->is('news/posts*') ? 'active' : '' }}">
           <a class="nav-link" href="{{ route('news.posts.index') }}">Posts</a>
         </li>
       </ul>
@@ -33,21 +33,10 @@
       </a>
     </li>
     <li class="menu-header">User</li>
-    <li class="nav-item dropdown {{ request()->is('user/profile-information') || request()->is('user/password') || request()->is('user/two-factor-authentication') ? 'active' : '' }}">
-      <a href="#" class="nav-link has-dropdown" data-toggle="dropdown">
+    <li class="{{ request()->is('user/*') ? 'active' : '' }}">
+      <a class="nav-link" href="{{ route('user-profile-information') }}">
         <i class="fas fa-user-cog"></i> <span>User</span>
       </a>
-      <ul class="dropdown-menu">
-        <li class="{{ request()->is('user/profile-information') ? 'active' : '' }}">
-          <a class="nav-link" href="{{ route('user-profile-information') }}">Profile Information</a>
-        </li>
-        <li class="{{ request()->is('user/password') ? 'active' : '' }}">
-          <a class="nav-link" href="{{ route('user-password') }}">Update Password</a>
-        </li>
-        <li class="{{ request()->is('user/two-factor-authentication') ? 'active' : '' }}">
-          <a class="nav-link" href="{{ route('user-two-factor-authentication') }}">Two Factor Authentication</a>
-        </li>
-      </ul>
     </li>
   </ul>
 </aside>

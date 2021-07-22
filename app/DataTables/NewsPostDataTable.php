@@ -51,7 +51,7 @@ class NewsPostDataTable extends DataTable
                 if ($data->editor_id) {
                     return $data->editor['name'];
                 } else {
-                    return '';
+                    return '-';
                 }
             })
             ->editColumn('created_at', function ($data) { 
