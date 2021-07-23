@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\{DashboardController, NewsCategoryController, NewsPostController};
+use App\Http\Controllers\{DashboardController, NewsCategoryController, NewsPostController, UserController};
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -36,6 +36,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::put('{news_post:slug}', [NewsPostController::class, 'update'])->name('update');
             Route::delete('{news_post:slug}', [NewsPostController::class, 'destroy'])->name('destroy');
         });
+    });
+
+    Route::prefix('users')->name('users.')->group(function () {
+        Route::get('', [UserController::class, 'index'])->name('index');
+        Route::get('create', [UserController::class, 'create'])->name('create');
+        Route::post('', [UserController::class, 'store'])->name('store');
+        Route::get('edit/{user:slug}', [UserController::class, 'edit'])->name('edit');
+        Route::put('{user:slug}', [UserController::class, 'update'])->name('update');
+        Route::delete('{user:slug}', [UserController::class, 'destroy'])->name('destroy');
     });
 
     Route::prefix('user')->name('user-')->group(function () {

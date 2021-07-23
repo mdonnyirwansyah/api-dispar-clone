@@ -2,12 +2,13 @@
 
 namespace App\DataTables;
 
-use App\Models\NewsPost;
+use App\Models\User;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Services\DataTable;
 
-class NewsPostDataTable extends DataTable
+class UserDataTable extends DataTable
 {
     /**
      * Build DataTable class.
@@ -20,35 +21,24 @@ class NewsPostDataTable extends DataTable
         return datatables()
             ->eloquent($query)
             ->addIndexColumn()
-            ->addColumn('category', function ($data) {
-                return $data->category->name;
-            })
-            ->addColumn('author', function ($data) {
-                return $data->author['name'];
-            })
-            ->addColumn('editor', function ($data) {
-                if ($data->editor_id) {
-                    return $data->editor['name'];
-                } else {
-                    return '';
-                }
+            ->addColumn('roles', function ($data) {
+                return $data->roles()->get()->implode('name', ', ');
             })
             ->addColumn('action', function ($data) {
+                if ($data->id == Auth::user()->id) {
+                    $display = 'd-none';
+                } else {
+                    $display = '';
+                }
+
                 return '
-                    <a href="'.route('news.posts.edit', $data).'" class="btn btn-icon">
+                    <button onClick="editRecord('.$data->id.')" id="edit-'.$data->id.'" edit-route="'.route('users.edit', $data).'" class="btn btn-icon">
                         <i class="fas fa-pen text-info"></i>
-                    </a> 
-                    <button onClick="deleteRecord('.$data->id.')" id="delete-'.$data->id.'" delete-route="'.route('news.posts.destroy', $data).'" class="btn btn-icon">
+                    </button>
+                    <button onClick="deleteRecord('.$data->id.')" id="delete-'.$data->id.'" delete-route="'.route('users.destroy', $data).'" class="btn btn-icon '.$display.'">
                         <i class="fas fa-trash text-danger"></i>
                     </button>
                 ';
-            })
-            ->editColumn('editor', function ($data) {
-                if ($data->editor_id) {
-                    return $data->editor['name'];
-                } else {
-                    return '-';
-                }
             })
             ->editColumn('created_at', function ($data) { 
                 $formatedDate = Carbon::createFromFormat('Y-m-d H:i:s', $data->created_at)->format('Y-m-d H:i:s'); 
@@ -65,10 +55,10 @@ class NewsPostDataTable extends DataTable
     /**
      * Get query source of dataTable.
      *
-     * @param \App\Models\NewsPost $model
+     * @param \App\Models\User $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(NewsPost $model)
+    public function query(User $model)
     {
         return $model->newQuery();
     }
@@ -81,10 +71,10 @@ class NewsPostDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-                    ->setTableId('newspost-table')
+                    ->setTableId('user-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
-                    ->orderBy(5);
+                    ->orderBy(1);
     }
 
     /**
@@ -96,11 +86,9 @@ class NewsPostDataTable extends DataTable
     {
         return [
             Column::make('DT_RowIndex')->title('No')->width(50),
-            Column::make('title'),
-            Column::computed('category'),
-            Column::computed('author'),
-            Column::computed('editor'),
-            Column::make('status'),
+            Column::make('email'),
+            Column::make('name'),
+            Column::computed('roles'),
             Column::make('created_at'),
             Column::make('updated_at'),
             Column::computed('action')->width(85),
@@ -114,6 +102,6 @@ class NewsPostDataTable extends DataTable
      */
     protected function filename()
     {
-        return 'NewsPost_' . date('YmdHis');
+        return 'User_' . date('YmdHis');
     }
 }

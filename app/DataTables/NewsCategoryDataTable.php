@@ -19,10 +19,6 @@ class NewsCategoryDataTable extends DataTable
     {
         return datatables()
             ->eloquent($query)
-            ->removeColumn('id')
-            ->setRowId(function ($data) {
-                return 'row'.$data->id;
-            })
             ->addIndexColumn()
             ->editColumn('created_at', function ($data) { 
                 $formatedDate = Carbon::createFromFormat('Y-m-d H:i:s', $data->created_at)->format('Y-m-d H:i:s'); 

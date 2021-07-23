@@ -29,6 +29,7 @@
     $(document).ready( function() {
         $('.select2').select2({
             theme: 'bootstrap4',
+            placeholder: 'Select tags',
         });
         $('.custom-file-input').change(function () {
             var fileName = $(this).val().split('\\').slice(-1)[0];

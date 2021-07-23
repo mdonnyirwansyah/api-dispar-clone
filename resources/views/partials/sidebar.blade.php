@@ -27,8 +27,8 @@
       </ul>
     </li>
     <li class="menu-header">Users</li>
-    <li>
-      <a class="nav-link" href="">
+    <li class="{{ request()->is('users') ? 'active' : '' }}">
+      <a class="nav-link" href="{{ route('users.index') }}">
         <i class="fas fa-users"></i> <span>Users</span>
       </a>
     </li>
