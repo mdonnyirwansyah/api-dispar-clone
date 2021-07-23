@@ -23,3 +23,7 @@ toastr.options = {
     showMethod: "fadeIn",
     hideMethod: "fadeOut",
 };
+
+$(document).ready(function () {
+    $("body").tooltip({ selector: "[data-toggle=tooltip]" });
+});

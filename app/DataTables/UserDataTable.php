@@ -32,23 +32,23 @@ class UserDataTable extends DataTable
                 }
 
                 return '
-                    <button onClick="editRecord('.$data->id.')" id="edit-'.$data->id.'" edit-route="'.route('users.edit', $data).'" class="btn btn-icon">
+                    <button data-toggle="tooltip" data-placement="top" title="Edit" onClick="editRecord('.$data->id.')" id="edit-'.$data->id.'" edit-route="'.route('users.edit', $data).'" class="btn btn-icon">
                         <i class="fas fa-pen text-info"></i>
                     </button>
-                    <button onClick="deleteRecord('.$data->id.')" id="delete-'.$data->id.'" delete-route="'.route('users.destroy', $data).'" class="btn btn-icon '.$display.'">
+                    <button data-toggle="tooltip" data-placement="top" title="Delete" onClick="deleteRecord('.$data->id.')" id="delete-'.$data->id.'" delete-route="'.route('users.destroy', $data).'" class="btn btn-icon '.$display.'">
                         <i class="fas fa-trash text-danger"></i>
                     </button>
                 ';
             })
-            ->editColumn('created_at', function ($data) { 
-                $formatedDate = Carbon::createFromFormat('Y-m-d H:i:s', $data->created_at)->format('Y-m-d H:i:s'); 
+            ->editColumn('created_at', function ($data) {
+                $formatedDate = Carbon::createFromFormat('Y-m-d H:i:s', $data->created_at)->format('Y-m-d H:i:s');
 
-                return $formatedDate; 
+                return $formatedDate;
             })
-            ->editColumn('updated_at', function ($data) { 
-                $formatedDate = Carbon::createFromFormat('Y-m-d H:i:s', $data->updated_at)->format('Y-m-d H:i:s'); 
+            ->editColumn('updated_at', function ($data) {
+                $formatedDate = Carbon::createFromFormat('Y-m-d H:i:s', $data->updated_at)->format('Y-m-d H:i:s');
 
-                return $formatedDate; 
+                return $formatedDate;
             });
     }
 
@@ -74,7 +74,7 @@ class UserDataTable extends DataTable
                     ->setTableId('user-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
-                    ->orderBy(1);
+                    ->orderBy(2, 'ASC');
     }
 
     /**

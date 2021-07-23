@@ -9,7 +9,7 @@
     function createRecord() {
         $.get('{{ route("users.create") }}', function (response) {
             $('#view-modal').html(response.success).show();
-            $('#modal-form').modal('show'); 
+            $('#modal-form').modal('show');
             $('.select2').select2({
                 theme: 'bootstrap4',
                 placeholder: 'Select roles',
@@ -42,10 +42,10 @@
                         printErrorMsg(errors.errors);
                     }
                 });
-            });     
+            });
         });
 
-        
+
     }
 
     function editRecord(id) {

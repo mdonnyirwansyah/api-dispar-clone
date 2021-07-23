@@ -33,7 +33,7 @@
             <a href="{{ route('news.posts.create') }}" class="btn btn-primary" onClick="createRecord()">Add New</a>
           </div>
           <hr>
-          {!! $dataTable->table(['class' => 'table table-bordered table-striped dt-responsive nowrap', 'cellpadding' => '0', 'style' => 'width: 100%']) !!}
+          {!! $dataTable->table(['class' => 'table table-bordered table-striped dt-responsive', 'cellpadding' => '0', 'style' => 'width: 100%']) !!}
         </div>
       </div>
     </div>

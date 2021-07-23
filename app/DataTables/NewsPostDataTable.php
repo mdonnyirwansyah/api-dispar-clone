@@ -35,10 +35,10 @@ class NewsPostDataTable extends DataTable
             })
             ->addColumn('action', function ($data) {
                 return '
-                    <a href="'.route('news.posts.edit', $data).'" class="btn btn-icon">
+                    <a data-toggle="tooltip" data-placement="top" title="Edit" href="'.route('news.posts.edit', $data).'" class="btn btn-icon">
                         <i class="fas fa-pen text-info"></i>
-                    </a> 
-                    <button onClick="deleteRecord('.$data->id.')" id="delete-'.$data->id.'" delete-route="'.route('news.posts.destroy', $data).'" class="btn btn-icon">
+                    </a>
+                    <button data-toggle="tooltip" data-placement="top" title="Delete" onClick="deleteRecord('.$data->id.')" id="delete-'.$data->id.'" delete-route="'.route('news.posts.destroy', $data).'" class="btn btn-icon">
                         <i class="fas fa-trash text-danger"></i>
                     </button>
                 ';
@@ -50,15 +50,15 @@ class NewsPostDataTable extends DataTable
                     return '-';
                 }
             })
-            ->editColumn('created_at', function ($data) { 
-                $formatedDate = Carbon::createFromFormat('Y-m-d H:i:s', $data->created_at)->format('Y-m-d H:i:s'); 
+            ->editColumn('created_at', function ($data) {
+                $formatedDate = Carbon::createFromFormat('Y-m-d H:i:s', $data->created_at)->format('Y-m-d H:i:s');
 
-                return $formatedDate; 
+                return $formatedDate;
             })
-            ->editColumn('updated_at', function ($data) { 
-                $formatedDate = Carbon::createFromFormat('Y-m-d H:i:s', $data->updated_at)->format('Y-m-d H:i:s'); 
+            ->editColumn('updated_at', function ($data) {
+                $formatedDate = Carbon::createFromFormat('Y-m-d H:i:s', $data->updated_at)->format('Y-m-d H:i:s');
 
-                return $formatedDate; 
+                return $formatedDate;
             });
     }
 
