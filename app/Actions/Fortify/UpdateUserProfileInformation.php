@@ -28,6 +28,11 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
                 'max:255',
                 Rule::unique('users')->ignore($user->id),
             ],
+            'gender' => ['required'],
+            'phone' => ['required', 'numeric', 'digits_between:11,13'],
+            'country' => ['required', 'string', 'max:20'],
+            'city' => ['required', 'string', 'max:30'],
+            'address' => ['required', 'string', 'max:255'],
         ])->validateWithBag('updateProfileInformation');
 
         if ($input['email'] !== $user->email &&
@@ -38,6 +43,24 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
                 'name' => $input['name'],
                 'email' => $input['email'],
             ])->save();
+
+            if (!$user->userDetail) {
+                $user->userDetail()->create([
+                    'gender' => $input['gender'],
+                    'phone' => $input['phone'],
+                    'country' => $input['country'],
+                    'city' => $input['city'],
+                    'address' => $input['address'],
+                ]);
+            } else {
+                $user->userDetail()->update([
+                    'gender' => $input['gender'],
+                    'phone' => $input['phone'],
+                    'country' => $input['country'],
+                    'city' => $input['city'],
+                    'address' => $input['address'],
+                ]);
+            }
         }
     }
 

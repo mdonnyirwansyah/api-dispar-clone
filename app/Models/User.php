@@ -77,4 +77,9 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return null !== $this->roles()->whereIn('name', $role)->first();
     }
+
+    public function userDetail()
+    {
+        return $this->hasOne(UserDetail::class);
+    }
 }

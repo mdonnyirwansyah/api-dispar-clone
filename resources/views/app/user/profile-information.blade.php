@@ -80,7 +80,71 @@
               <div class="form-group row align-items-center">
                 <label for="roles" class="form-control-label col-sm-3 text-md-right">Roles</label>
                 <div class="col-sm-6 col-md-9">
-                  <input type="text" roles="roles" class="form-control" id="roles" value="{{ old('roles') ?? Auth::user()->roles()->get()->implode('name', ', ') }}" readonly>
+                  <input type="text" class="form-control" id="roles" value="{{ old('roles') ?? Auth::user()->roles()->get()->implode('name', ', ') }}" readonly>
+                </div>
+              </div>
+              <div class="form-group row align-items-center">
+                <label for="gender" class="form-control-label col-sm-3 text-md-right">Gender</label>
+                <div class="col-sm-6 col-md-9">
+                    <div class="d-flex @error('gender', 'updateProfileInformation') is-invalid @enderror">
+                        <div class="custom-control custom-radio mr-5">
+                            <input type="radio" class="custom-control-input @error('gender', 'updateProfileInformation') is-invalid @enderror" name="gender" id="Male" value="Male" @isset(Auth::user()->userDetail->gender) @if (Auth::user()->userDetail->gender == 'Male') checked @endif @endisset>
+                            <label class="custom-control-label" for="Male">Male</label>
+                        </div>
+                        <div class="custom-control custom-radio">
+                            <input type="radio" class="custom-control-input @error('gender', 'updateProfileInformation') is-invalid @enderror" name="gender" id="Female" value="Female" @isset(Auth::user()->userDetail->gender) @if (Auth::user()->userDetail->gender == 'Female') checked @endif @endisset>
+                            <label class="custom-control-label" for="Female">Female</label>
+                        </div>
+                    </div>
+                    @error('gender', 'updateProfileInformation')
+                    <span class="invalid-feedback" role="alert">
+                        <small>{{ $message }}</small>
+                    </span>
+                    @enderror
+                </div>
+              </div>
+              <div class="form-group row align-items-center">
+                <label for="phone" class="form-control-label col-sm-3 text-md-right">Phone</label>
+                <div class="col-sm-6 col-md-9">
+                  <input type="text" name="phone" class="form-control @error('phone', 'updateProfileInformation') is-invalid @enderror" id="phone" value="{{ old('phone') ?? Auth::user()->userDetail->phone ?? '' }}">
+                  @error('phone', 'updateProfileInformation')
+                  <span class="invalid-feedback" role="alert">
+                      <small>{{ $message }}</small>
+                  </span>
+                  @enderror
+                </div>
+              </div>
+              <div class="form-group row align-items-center">
+                <label for="country" class="form-control-label col-sm-3 text-md-right">Country</label>
+                <div class="col-sm-6 col-md-9">
+                  <input type="text" name="country" class="form-control @error('country', 'updateProfileInformation') is-invalid @enderror" id="country" value="{{ old('country') ?? Auth::user()->userDetail->country ?? '' }}">
+                  @error('country', 'updateProfileInformation')
+                  <span class="invalid-feedback" role="alert">
+                      <small>{{ $message }}</small>
+                  </span>
+                  @enderror
+                </div>
+              </div>
+              <div class="form-group row align-items-center">
+                <label for="city" class="form-control-label col-sm-3 text-md-right">City</label>
+                <div class="col-sm-6 col-md-9">
+                  <input type="text" name="city" class="form-control @error('city', 'updateProfileInformation') is-invalid @enderror" id="city" value="{{ old('city') ?? Auth::user()->userDetail->city ?? '' }}">
+                  @error('city', 'updateProfileInformation')
+                  <span class="invalid-feedback" role="alert">
+                      <small>{{ $message }}</small>
+                  </span>
+                  @enderror
+                </div>
+              </div>
+              <div class="form-group row align-items-center">
+                <label for="address" class="form-control-label col-sm-3 text-md-right">Address</label>
+                <div class="col-sm-6 col-md-9">
+                  <input type="text" name="address" class="form-control @error('address', 'updateProfileInformation') is-invalid @enderror" id="address" value="{{ old('address') ?? Auth::user()->userDetail->address ?? '' }}">
+                  @error('address', 'updateProfileInformation')
+                  <span class="invalid-feedback" role="alert">
+                      <small>{{ $message }}</small>
+                  </span>
+                  @enderror
                 </div>
               </div>
             </div>

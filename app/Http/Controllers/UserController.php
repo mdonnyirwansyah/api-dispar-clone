@@ -8,7 +8,6 @@ use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
@@ -85,7 +84,6 @@ class UserController extends Controller
         if ($validator->passes()) {
             $user->email = $request->email;
             $user->name = $request->name;
-            $user->slug = Str::slug($request->name);
             $user->save();
 
             $user->roles()->sync($request->roles);

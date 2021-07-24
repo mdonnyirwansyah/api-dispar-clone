@@ -54,9 +54,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('', [UserController::class, 'index'])->name('index');
         Route::get('create', [UserController::class, 'create'])->name('create');
         Route::post('', [UserController::class, 'store'])->name('store');
-        Route::get('edit/{user:slug}', [UserController::class, 'edit'])->name('edit');
-        Route::put('{user:slug}', [UserController::class, 'update'])->name('update');
-        Route::delete('{user:slug}', [UserController::class, 'destroy'])->name('destroy');
+        Route::get('edit/{user}', [UserController::class, 'edit'])->name('edit');
+        Route::put('{user}', [UserController::class, 'update'])->name('update');
+        Route::delete('{user}', [UserController::class, 'destroy'])->name('destroy');
     });
 
     Route::prefix('user')->name('user-')->group(function () {

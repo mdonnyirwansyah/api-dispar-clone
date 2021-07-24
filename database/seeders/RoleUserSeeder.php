@@ -18,8 +18,8 @@ class RoleUserSeeder extends Seeder
     {
         DB::table('role_user')->insert(
             [
-                'role_id' => Role::select('id')->orderByRaw("RAND()")->first()->id,
-                'user_id' => User::select('id')->orderByRaw("RAND()")->first()->id,
+                'role_id' => Role::select('id')->orderByRaw(1)->first()->id,
+                'user_id' => User::select('id')->orderByRaw(1)->first()->id,
             ]
         );
     }
