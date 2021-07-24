@@ -3,7 +3,6 @@
 namespace App\DataTables;
 
 use App\Models\User;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Services\DataTable;
@@ -41,14 +40,10 @@ class UserDataTable extends DataTable
                 ';
             })
             ->editColumn('created_at', function ($data) {
-                $formatedDate = Carbon::createFromFormat('Y-m-d H:i:s', $data->created_at)->format('Y-m-d H:i:s');
-
-                return $formatedDate;
+                return $data->created_at->format('Y-m-d H:i:s');
             })
             ->editColumn('updated_at', function ($data) {
-                $formatedDate = Carbon::createFromFormat('Y-m-d H:i:s', $data->updated_at)->format('Y-m-d H:i:s');
-
-                return $formatedDate;
+                return $data->updated_at->format('Y-m-d H:i:s');
             });
     }
 
@@ -74,7 +69,7 @@ class UserDataTable extends DataTable
                     ->setTableId('user-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
-                    ->orderBy(2, 'ASC');
+                    ->orderBy(1, 'ASC');
     }
 
     /**

@@ -77,6 +77,12 @@
                   @enderror
                 </div>
               </div>
+              <div class="form-group row align-items-center">
+                <label for="roles" class="form-control-label col-sm-3 text-md-right">Roles</label>
+                <div class="col-sm-6 col-md-9">
+                  <input type="text" roles="roles" class="form-control" id="roles" value="{{ old('roles') ?? Auth::user()->roles()->get()->implode('name', ', ') }}" readonly>
+                </div>
+              </div>
             </div>
             <div class="card-footer bg-whitesmoke text-md-right">
               <button class="btn btn-primary" type="submit">Save Changes</button>

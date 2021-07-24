@@ -3,7 +3,8 @@
 namespace App\DataTables;
 
 use App\Models\NewsPost;
-use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Services\DataTable;
 
@@ -21,7 +22,10 @@ class NewsPostDataTable extends DataTable
             ->eloquent($query)
             ->addIndexColumn()
             ->addColumn('category', function ($data) {
-                return $data->category->name;
+                return $data->newsCategory->name;
+            })
+            ->addColumn('tags', function ($data) {
+                return $data->newsTags()->get()->implode('name', ', ');
             })
             ->addColumn('author', function ($data) {
                 return $data->author['name'];
@@ -30,7 +34,7 @@ class NewsPostDataTable extends DataTable
                 if ($data->editor_id) {
                     return $data->editor['name'];
                 } else {
-                    return '';
+                    return '-';
                 }
             })
             ->addColumn('action', function ($data) {
@@ -43,22 +47,11 @@ class NewsPostDataTable extends DataTable
                     </button>
                 ';
             })
-            ->editColumn('editor', function ($data) {
-                if ($data->editor_id) {
-                    return $data->editor['name'];
-                } else {
-                    return '-';
-                }
-            })
             ->editColumn('created_at', function ($data) {
-                $formatedDate = Carbon::createFromFormat('Y-m-d H:i:s', $data->created_at)->format('Y-m-d H:i:s');
-
-                return $formatedDate;
+                return $data->created_at->format('Y-m-d H:i:s');
             })
             ->editColumn('updated_at', function ($data) {
-                $formatedDate = Carbon::createFromFormat('Y-m-d H:i:s', $data->updated_at)->format('Y-m-d H:i:s');
-
-                return $formatedDate;
+                return $data->updated_at->format('Y-m-d H:i:s');
             });
     }
 
@@ -70,7 +63,13 @@ class NewsPostDataTable extends DataTable
      */
     public function query(NewsPost $model)
     {
-        return $model->newQuery();
+        if (Gate::allows('is-administrator')) {
+            return $model->whereIn('status', ['Published', 'Pending']);
+        } elseif (Gate::allows('is-author')) {
+            return $model->where('author_id', Auth::user()->id);
+        } elseif (Gate::allows('is-editor')) {
+            return $model->whereIn('editor_id', [Auth::user()->id, null]);
+        }
     }
 
     /**
@@ -84,7 +83,7 @@ class NewsPostDataTable extends DataTable
                     ->setTableId('newspost-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
-                    ->orderBy(5);
+                    ->orderBy(8);
     }
 
     /**
@@ -98,9 +97,11 @@ class NewsPostDataTable extends DataTable
             Column::make('DT_RowIndex')->title('No')->width(50),
             Column::make('title'),
             Column::computed('category'),
+            Column::computed('tags'),
             Column::computed('author'),
             Column::computed('editor'),
             Column::make('status'),
+            Column::make('published_at'),
             Column::make('created_at'),
             Column::make('updated_at'),
             Column::computed('action')->width(85),

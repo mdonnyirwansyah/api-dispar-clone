@@ -2,11 +2,11 @@
 
 namespace App\DataTables;
 
-use App\Models\NewsCategory;
+use App\Models\NewsTag;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Services\DataTable;
 
-class NewsCategoryDataTable extends DataTable
+class NewsTagDataTable extends DataTable
 {
     /**
      * Build DataTable class.
@@ -21,10 +21,10 @@ class NewsCategoryDataTable extends DataTable
             ->addIndexColumn()
             ->addColumn('action', function ($data) {
                 return '
-                    <button data-toggle="tooltip" data-placement="top" title="Edit" onClick="editRecord('.$data->id.')" id="edit-'.$data->id.'" edit-route="'.route('news.categories.edit', $data).'" class="btn btn-icon">
+                    <button data-toggle="tooltip" data-placement="top" title="Edit" onClick="editRecord('.$data->id.')" id="edit-'.$data->id.'" edit-route="'.route('news.tags.edit', $data).'" class="btn btn-icon">
                         <i class="fas fa-pen text-info"></i>
                     </button>
-                    <button data-toggle="tooltip" data-placement="top" title="Delete" onClick="deleteRecord('.$data->id.')" id="delete-'.$data->id.'" delete-route="'.route('news.categories.destroy', $data).'" class="btn btn-icon">
+                    <button data-toggle="tooltip" data-placement="top" title="Delete" onClick="deleteRecord('.$data->id.')" id="delete-'.$data->id.'" delete-route="'.route('news.tags.destroy', $data).'" class="btn btn-icon">
                         <i class="fas fa-trash text-danger"></i>
                     </button>
                 ';
@@ -40,10 +40,10 @@ class NewsCategoryDataTable extends DataTable
     /**
      * Get query source of dataTable.
      *
-     * @param \App\Models\NewsCategory $model
+     * @param \App\Models\NewsTag $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(NewsCategory $model)
+    public function query(NewsTag $model)
     {
         return $model->newQuery();
     }
@@ -56,10 +56,10 @@ class NewsCategoryDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-                    ->setTableId('newscategory-table')
+                    ->setTableId('newstag-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
-                    ->orderBy([1, 'ASC']);
+                    ->orderBy(1, 'ASC');
     }
 
     /**
@@ -74,7 +74,7 @@ class NewsCategoryDataTable extends DataTable
             Column::make('name'),
             Column::make('created_at'),
             Column::make('updated_at'),
-            Column::computed('action')->width(85),
+            Column::computed('action')->width(85)
         ];
     }
 
@@ -85,6 +85,6 @@ class NewsCategoryDataTable extends DataTable
      */
     protected function filename()
     {
-        return 'NewsCategory_' . date('YmdHis');
+        return 'NewsTag_' . date('YmdHis');
     }
 }

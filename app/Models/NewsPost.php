@@ -11,11 +11,16 @@ class NewsPost extends Model
 
     protected $guarded = [];
 
-    public function category()
+    public function newsCategory()
     {
         return $this->belongsTo(NewsCategory::class);
     }
-    
+
+    public function newsTags()
+    {
+        return $this->belongsToMany(NewsTag::class);
+    }
+
     public function author()
     {
         return $this->belongsTo(User::class, 'author_id');

@@ -33,7 +33,7 @@ class NewsPostFactory extends Factory
         }
         return [
             'title' => $title,
-            'category_id' => $this->faker->randomElement([1, 2, 3, 4]),
+            'news_category_id' => $this->faker->randomElement([1, 2, 3, 4]),
             'content' => $this->faker->paragraph($nbSentences = 40, $variableNbSentences = true),
             'author_id'=> User::factory(),
             'source' => $this->faker->company,

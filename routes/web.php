@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\{DashboardController, NewsCategoryController, NewsPostController, UserController};
+use App\Http\Controllers\{DashboardController, NewsCategoryController, NewsPostController, NewsTagController, UserController};
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,25 +20,37 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/', DashboardController::class)->name('dashboard');
 
     Route::prefix('news')->name('news.')->group(function () {
-        Route::prefix('categories')->name('categories.')->group(function () {
-            Route::get('', [NewsCategoryController::class, 'index'])->name('index');
-            Route::get('create', [NewsCategoryController::class, 'create'])->name('create');
-            Route::post('', [NewsCategoryController::class, 'store'])->name('store');
-            Route::get('edit/{news_category:slug}', [NewsCategoryController::class, 'edit'])->name('edit');
-            Route::put('{news_category:slug}', [NewsCategoryController::class, 'update'])->name('update');
-            Route::delete('{news_category:slug}', [NewsCategoryController::class, 'destroy'])->name('destroy');
+        Route::middleware(['auth.isAdministrator'])->group(function () {
+            Route::prefix('categories')->name('categories.')->group(function () {
+                Route::get('', [NewsCategoryController::class, 'index'])->name('index');
+                Route::get('create', [NewsCategoryController::class, 'create'])->name('create');
+                Route::post('', [NewsCategoryController::class, 'store'])->name('store');
+                Route::get('edit/{news_category:slug}', [NewsCategoryController::class, 'edit'])->name('edit');
+                Route::put('{news_category:slug}', [NewsCategoryController::class, 'update'])->name('update');
+                Route::delete('{news_category:slug}', [NewsCategoryController::class, 'destroy'])->name('destroy');
+            });
+            Route::prefix('tags')->name('tags.')->group(function () {
+                Route::get('', [NewsTagController::class, 'index'])->name('index');
+                Route::get('create', [NewsTagController::class, 'create'])->name('create');
+                Route::post('', [NewsTagController::class, 'store'])->name('store');
+                Route::get('edit/{news_tag:slug}', [NewsTagController::class, 'edit'])->name('edit');
+                Route::put('{news_tag:slug}', [NewsTagController::class, 'update'])->name('update');
+                Route::delete('{news_tag:slug}', [NewsTagController::class, 'destroy'])->name('destroy');
+            });
         });
         Route::prefix('posts')->name('posts.')->group(function () {
             Route::get('', [NewsPostController::class, 'index'])->name('index');
-            Route::get('create', [NewsPostController::class, 'create'])->name('create');
-            Route::post('', [NewsPostController::class, 'store'])->name('store');
+            Route::middleware(['auth.isAuthor'])->group(function () {
+                Route::get('create', [NewsPostController::class, 'create'])->name('create');
+                Route::post('', [NewsPostController::class, 'store'])->name('store');
+            });
             Route::get('edit/{news_post:slug}', [NewsPostController::class, 'edit'])->name('edit');
             Route::put('{news_post:slug}', [NewsPostController::class, 'update'])->name('update');
             Route::delete('{news_post:slug}', [NewsPostController::class, 'destroy'])->name('destroy');
         });
     });
 
-    Route::prefix('users')->name('users.')->group(function () {
+    Route::prefix('users')->middleware(['auth.isAdministrator'])->name('users.')->group(function () {
         Route::get('', [UserController::class, 'index'])->name('index');
         Route::get('create', [UserController::class, 'create'])->name('create');
         Route::post('', [UserController::class, 'store'])->name('store');

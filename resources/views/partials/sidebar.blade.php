@@ -18,20 +18,27 @@
         <i class="fas fa-newspaper"></i> <span>News</span>
       </a>
       <ul class="dropdown-menu">
+        @can('is-administrator')
         <li class="{{ request()->is('news/categories') ? 'active' : '' }}">
           <a class="nav-link" href="{{ route('news.categories.index') }}">Categories</a>
         </li>
+        <li class="{{ request()->is('news/tags') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('news.tags.index') }}">Tags</a>
+        </li>
+        @endcan
         <li class="{{ request()->is('news/posts*') ? 'active' : '' }}">
           <a class="nav-link" href="{{ route('news.posts.index') }}">Posts</a>
         </li>
       </ul>
     </li>
+    @can('is-administrator')
     <li class="menu-header">Users</li>
     <li class="{{ request()->is('users') ? 'active' : '' }}">
       <a class="nav-link" href="{{ route('users.index') }}">
         <i class="fas fa-users"></i> <span>Users</span>
       </a>
     </li>
+    @endcan
     <li class="menu-header">User</li>
     <li class="{{ request()->is('user/*') ? 'active' : '' }}">
       <a class="nav-link" href="{{ route('user-profile-information') }}">

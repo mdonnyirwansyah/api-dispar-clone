@@ -2,24 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Actions\Fortify\CreateNewUser;
-use App\DataTables\UserDataTable;
-use App\Models\Role;
-use App\Models\User;
+use App\DataTables\NewsTagDataTable;
+use App\Models\NewsTag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
-class UserController extends Controller
+class NewsTagController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(UserDataTable $dataTable)
+    public function index(NewsTagDataTable $dataTable)
     {
-        return $dataTable->render('app.users.index');
+        return $dataTable->render('app.news.tags.index');
     }
 
     /**
@@ -29,9 +27,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        $roles = Role::all();
-
-        return response()->json(['success' => view('app.users.create', compact('roles'))->render()]);
+        return response()->json(['success' => view('app.news.tags.create')->render()]);
     }
 
     /**
@@ -42,53 +38,50 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $newUser = new CreateNewUser();
-        $user = $newUser->create($request->only(['name', 'email', 'password', 'password_confirmation']));
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|unique:news_tags',
+        ]);
 
-        if ($user) {
-            $user->roles()->sync($request->roles);
-
+        if ($validator->passes()) {
+            $newsTag = new NewsTag();
+            $newsTag->name = $request->name;
+            $newsTag->slug = Str::slug($request->name);
+            $newsTag->save();
 
             return response()->json(['success' => 'New record has been created!']);
         }
 
-        return response()->assertStatus(200);
+        return response()->json(['error' => $validator->errors()]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\User  $user
+     * @param  \App\Models\NewsTag  $newsTag
      * @return \Illuminate\Http\Response
      */
-    public function edit(User $user)
+    public function edit(NewsTag $newsTag)
     {
-        $roles = Role::all();
-
-        return response()->json(['success' => view('app.users.edit', compact('user', 'roles'))->render()]);
+        return response()->json(['success' => view('app.news.tags.edit', compact('newsTag'))->render()]);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\User  $user
+     * @param  \App\Models\NewsTag  $newsTag
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, NewsTag $newsTag)
     {
         $validator = Validator::make($request->all(), [
-            'email' => 'required|unique:users,email,' .$user->id,
-            'name' => 'required'
+            'name' => 'required|unique:news_tags,name,' .$newsTag->id,
         ]);
 
         if ($validator->passes()) {
-            $user->email = $request->email;
-            $user->name = $request->name;
-            $user->slug = Str::slug($request->name);
-            $user->save();
-
-            $user->roles()->sync($request->roles);
+            $newsTag->name = $request->name;
+            $newsTag->slug = Str::slug($request->name);
+            $newsTag->save();
 
             return response()->json(['success' => 'Record has been updated!']);
         }
@@ -99,12 +92,12 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\User  $user
+     * @param  \App\Models\NewsTag  $newsTag
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy(NewsTag $newsTag)
     {
-        $user->delete();
+        $newsTag->delete();
 
         return response()->json(['success' => 'Record has been deleted!']);
     }

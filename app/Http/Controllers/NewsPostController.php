@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\DataTables\NewsPostDataTable;
 use App\Models\NewsCategory;
 use App\Models\NewsPost;
+use App\Models\NewsTag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -26,8 +27,9 @@ class NewsPostController extends Controller
     public function create()
     {
         $newsCategories = NewsCategory::all();
+        $newsTags = NewsTag::all();
 
-        return view('app.news.posts.create', compact('newsCategories'));
+        return view('app.news.posts.create', compact('newsCategories', 'newsTags'));
     }
 
     public function store(Request $request)
@@ -43,14 +45,18 @@ class NewsPostController extends Controller
         if ($validator->passes()) {
             $newsPost = new NewsPost();
             $newsPost->title = $request->title;
-            $newsPost->category_id = $request->category;
+            $newsPost->news_category_id = $request->category;
             $newsPost->content = $request->content;
             $newsPost->source = $request->source;
             $newsPost->author_id = Auth::user()->id;
             $newsPost->thumbnail = $request->file('thumbnail')->store('images/news');
             $newsPost->slug = Str::slug($request->title);
             $newsPost->save();
-    
+
+            if ($request->tags) {
+                $newsPost->newsTags()->sync($request->tags);
+            }
+
             return response()->json(['success' => 'New record has been created!']);
         }
 
@@ -60,8 +66,9 @@ class NewsPostController extends Controller
     public function edit(NewsPost $newsPost)
     {
         $newsCategories = NewsCategory::all();
+        $newsTags = NewsTag::all();
 
-        return view('app.news.posts.edit', compact('newsCategories', 'newsPost'));
+        return view('app.news.posts.edit', compact('newsCategories', 'newsTags', 'newsPost'));
     }
 
     public function update(Request $request, NewsPost $newsPost)
@@ -85,8 +92,8 @@ class NewsPostController extends Controller
             $thumbnail = null;
         }
 
-        if ($newsPost->editor) {
-            $editor = $newsPost->editor;
+        if ($newsPost->editor_id) {
+            $editor = $newsPost->editor_id;
         } else {
             $editor = Auth::user()->id;
         }
@@ -94,7 +101,7 @@ class NewsPostController extends Controller
         if ($validator->passes()) {
             $newsPost->title = $request->title;
             $newsPost->title_en = $request->title_en;
-            $newsPost->category_id = $request->category;
+            $newsPost->news_category_id = $request->category;
             $newsPost->content = $request->content;
             $newsPost->content_en = $request->content_en;
             $newsPost->source = $request->source;
@@ -102,7 +109,11 @@ class NewsPostController extends Controller
             $newsPost->thumbnail = $thumbnail;
             $newsPost->slug = Str::slug($request->title);
             $newsPost->save();
-    
+
+            if ($request->tags) {
+                $newsPost->newsTags()->sync($request->tags);
+            }
+
             return response()->json(['success' => 'Record has been updated!']);
         }
 

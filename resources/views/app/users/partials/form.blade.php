@@ -32,7 +32,7 @@
 <div class="form-group row">
   <label for="roles" class="col-form-label col-md-3">Roles</label>
   <div class="col-md-9">
-    <select class="form-select select2" name="roles[]" id="roles" multiple>
+    <select class="form-select select2" style="width: 100%" name="roles[]" id="roles" multiple>
       @foreach ($roles as $role)
       <option value="{{ $role->id }}" @isset($user) @if(in_array($role->id, $user->roles->pluck('id')->toArray())) selected @endif @endisset>{{ $role->name }}</option>
       @endforeach

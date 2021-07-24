@@ -65,7 +65,7 @@
       <label class="custom-file-label" for="customFile">Choose file</label>
     </div>
     <footer class="blockquote-footer">
-      The thumbnail must be a file of type: 
+      The thumbnail must be a file of type:
       <cite title="Source Title">jpg, jpeg, png, webp. And max 2048 kb.</cite>
     </footer>
     <small class="invalid-feedback thumbnail_err"></small>
@@ -74,10 +74,10 @@
 <div class="form-group row mb-4">
   <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Tags</label>
   <div class="col-sm-12 col-md-7">
-    <select class="form-control select2" style="width: 100%" name="tags" id="tags" multiple>
-      <option value="">Tech</option>
-      <option value="">Travel</option>
-      <option value="">Lifestyle</option>
+    <select class="form-control select2" style="width: 100%" name="tags[]" id="tags" multiple>
+        @foreach ($newsTags as $newsTag)
+        <option value="{{ $newsTag->id }}" @isset($newsPost) @if(in_array($newsTag->id, $newsPost->newsTags->pluck('id')->toArray())) selected @endif @endisset>{{ $newsTag->name }}</option>
+        @endforeach
     </select>
   </div>
 </div>

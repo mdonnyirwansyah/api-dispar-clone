@@ -52,7 +52,7 @@
                 success: function (response) {
                     if(response.success){
                         toastr.success(response.success, 'Congratulations,');
-                        
+
                         async function redirect() {
                         let promise = new Promise(function(resolve, reject) {
                             setTimeout(function() { resolve('{{ route("news.posts.index") }}'); }, 3000);
@@ -71,7 +71,7 @@
                 }
             });
         });
-    });      
+    });
 </script>
 @endpush
 

@@ -13,7 +13,7 @@ class NewsCategoryController extends Controller
     public function index(NewsCategoryDataTable $dataTable)
     {
         return $dataTable->render('app.news.categories.index');
-    } 
+    }
 
     public function create()
     {
@@ -31,8 +31,7 @@ class NewsCategoryController extends Controller
             $newsCategory->name = $request->name;
             $newsCategory->slug = Str::slug($request->name);
             $newsCategory->save();
-            
-    
+
             return response()->json(['success' => 'New record has been created!']);
         }
 
@@ -54,7 +53,7 @@ class NewsCategoryController extends Controller
             $newsCategory->name = $request->name;
             $newsCategory->slug = Str::slug($request->name);
             $newsCategory->save();
-    
+
             return response()->json(['success' => 'Record has been updated!']);
         }
 

@@ -36,6 +36,7 @@
     $(document).ready( function() {
         $('.select2').select2({
             theme: 'bootstrap4',
+            placeholder: 'Select tags',
         });
         $('.custom-file-input').change(function () {
             var fileName = $(this).val().split('\\').slice(-1)[0];
@@ -58,7 +59,7 @@
                 success: function (response) {
                     if(response.success){
                         toastr.success(response.success, 'Congratulations,');
-                        
+
                         async function redirect() {
                         let promise = new Promise(function(resolve, reject) {
                             setTimeout(function() { resolve('{{ route("news.posts.index") }}'); }, 3000);
@@ -76,7 +77,7 @@
                 }
             });
         });
-    });      
+    });
 </script>
 @endpush
 
