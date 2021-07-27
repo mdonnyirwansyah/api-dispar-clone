@@ -29,12 +29,13 @@
     <div class="card">
       <div class="card-body">
         <div class="col-12">
-          @can('is-author')
           <div class="section-header-button mb-3">
+            @can('is-author')
             <a href="{{ route('news.posts.create') }}" class="btn btn-primary" onClick="createRecord()">Add New</a>
+            @endcan
+            <button class="btn btn-danger" id="btn-delete-checkbox" data-route="{{ route('news.posts.destroy.checked') }}" style="display: none"></button>
           </div>
           <hr>
-          @endcan
           {!! $dataTable->table(['class' => 'table table-bordered table-striped dt-responsive nowrap', 'cellpadding' => '0', 'style' => 'width: 100%']) !!}
         </div>
       </div>

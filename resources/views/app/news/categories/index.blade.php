@@ -31,6 +31,7 @@
         <div class="col-12">
           <div class="section-header-button mb-3">
             <button class="btn btn-primary" onClick="createRecord()">Add New</button>
+            <button class="btn btn-danger" id="btn-delete-checkbox" data-route="{{ route('news.categories.destroy.checked') }}" style="display: none"></button>
           </div>
           <hr>
           {!! $dataTable->table(['class' => 'table table-bordered table-striped dt-responsive nowrap', 'cellpadding' => '0', 'style' => 'width: 100%']) !!}

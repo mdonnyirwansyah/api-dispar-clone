@@ -28,6 +28,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 Route::get('edit/{news_category:slug}', [NewsCategoryController::class, 'edit'])->name('edit');
                 Route::put('{news_category:slug}', [NewsCategoryController::class, 'update'])->name('update');
                 Route::delete('{news_category:slug}', [NewsCategoryController::class, 'destroy'])->name('destroy');
+                Route::post('delete-checked', [NewsCategoryController::class, 'destroyChecked'])->name('destroy.checked');
             });
             Route::prefix('tags')->name('tags.')->group(function () {
                 Route::get('', [NewsTagController::class, 'index'])->name('index');
@@ -36,6 +37,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 Route::get('edit/{news_tag:slug}', [NewsTagController::class, 'edit'])->name('edit');
                 Route::put('{news_tag:slug}', [NewsTagController::class, 'update'])->name('update');
                 Route::delete('{news_tag:slug}', [NewsTagController::class, 'destroy'])->name('destroy');
+                Route::post('delete-checked', [NewsTagController::class, 'destroyChecked'])->name('destroy.checked');
             });
         });
         Route::prefix('posts')->name('posts.')->group(function () {
@@ -47,6 +49,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('edit/{news_post:slug}', [NewsPostController::class, 'edit'])->name('edit');
             Route::put('{news_post:slug}', [NewsPostController::class, 'update'])->name('update');
             Route::delete('{news_post:slug}', [NewsPostController::class, 'destroy'])->name('destroy');
+            Route::post('delete-checked', [NewsPostController::class, 'destroyChecked'])->name('destroy.checked');
         });
     });
 
@@ -57,6 +60,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('edit/{user}', [UserController::class, 'edit'])->name('edit');
         Route::put('{user}', [UserController::class, 'update'])->name('update');
         Route::delete('{user}', [UserController::class, 'destroy'])->name('destroy');
+        Route::post('delete-checked', [UserController::class, 'destroyChecked'])->name('destroy.checked');
     });
 
     Route::prefix('user')->name('user-')->group(function () {

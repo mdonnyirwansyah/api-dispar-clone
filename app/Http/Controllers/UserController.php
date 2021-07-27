@@ -106,4 +106,12 @@ class UserController extends Controller
 
         return response()->json(['success' => 'Record has been deleted!']);
     }
+
+    public function destroyChecked(Request $request)
+    {
+        $users = User::whereIn('id', $request->rowChecked);
+        $users->delete();
+
+        return response()->json(['success' => 'Record has been deleted!']);
+    }
 }

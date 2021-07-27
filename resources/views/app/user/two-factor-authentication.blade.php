@@ -46,6 +46,12 @@
               <li class="nav-item">
                 <a href="{{ route('user-two-factor-authentication') }}" class="nav-link active">Two Factor Authentication</a>
               </li>
+              <li class="nav-item">
+                <a class="nav-link text-danger" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                    @csrf
+                </form>
+              </li>
             </ul>
           </div>
         </div>
@@ -56,7 +62,7 @@
                 <p class="text-muted text-justify">When two factor authentication is enabled, you will be prompted for a secure, random token during authentication. You may retrieve this token from your phone's Google Authenticator application.</p>
                 <div class="form-group row align-items-center">
                     <label class="form-control-label col-8 col-sm-6 col-md-5 text-sm-right text-md-right">Two Factor Authentication</label>
-                    <div class="col-4 col-sm-6 col-md-4">                        
+                    <div class="col-4 col-sm-6 col-md-4">
                         <form method="POST" action="{{ url('user/two-factor-authentication') }}">
                             @csrf
                             @if (Auth::user()->two_factor_secret)

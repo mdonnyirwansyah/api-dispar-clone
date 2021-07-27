@@ -66,4 +66,12 @@ class NewsCategoryController extends Controller
 
         return response()->json(['success' => 'Record has been deleted!']);
     }
+
+    public function destroyChecked(Request $request)
+    {
+        $newsCategories = NewsCategory::whereIn('id', $request->rowChecked);
+        $newsCategories->delete();
+
+        return response()->json(['success' => 'Record has been deleted!']);
+    }
 }

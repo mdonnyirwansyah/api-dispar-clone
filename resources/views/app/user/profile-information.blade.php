@@ -45,6 +45,12 @@
               <li class="nav-item">
                 <a href="{{ route('user-two-factor-authentication') }}" class="nav-link text-dark">Two Factor Authentication</a>
               </li>
+              <li class="nav-item">
+                <a class="nav-link text-danger" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                    @csrf
+                </form>
+              </li>
             </ul>
           </div>
         </div>

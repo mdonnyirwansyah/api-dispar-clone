@@ -19,6 +19,9 @@ class NewsCategoryDataTable extends DataTable
         return datatables()
             ->eloquent($query)
             ->addIndexColumn()
+            ->addColumn('checkbox', function ($data) {
+                return '<input type="checkbox" name="row_checkbox" data-id="'.$data->id.'">';
+            })
             ->addColumn('action', function ($data) {
                 return '
                     <button data-toggle="tooltip" data-placement="top" title="Edit" onClick="editRecord('.$data->id.')" id="edit-'.$data->id.'" edit-route="'.route('news.categories.edit', $data).'" class="btn btn-icon">
@@ -34,7 +37,8 @@ class NewsCategoryDataTable extends DataTable
             })
             ->editColumn('updated_at', function ($data) {
                 return $data->updated_at->format('Y-m-d H:i:s');
-            });
+            })
+            ->rawColumns(['checkbox', 'action']);
     }
 
     /**
@@ -59,7 +63,7 @@ class NewsCategoryDataTable extends DataTable
                     ->setTableId('newscategory-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
-                    ->orderBy([1, 'ASC']);
+                    ->orderBy([2, 'ASC']);
     }
 
     /**
@@ -70,7 +74,8 @@ class NewsCategoryDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            Column::make('DT_RowIndex')->title('No')->width(50),
+            Column::computed('checkbox')->title('<input type="checkbox" name="main_checkbox" id="delete-all" title="checkbox">'),
+            Column::make('DT_RowIndex')->searchable(false)->title('No')->width(50),
             Column::make('name'),
             Column::make('created_at'),
             Column::make('updated_at'),

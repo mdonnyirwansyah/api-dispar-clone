@@ -20,6 +20,15 @@ class UserDataTable extends DataTable
         return datatables()
             ->eloquent($query)
             ->addIndexColumn()
+            ->addColumn('checkbox', function ($data) {
+                if ($data->id == Auth::user()->id) {
+                    $type = 'hidden';
+                } else {
+                    $type = 'checkbox';
+                }
+
+                return '<input type="'.$type.'" name="row_checkbox" data-id="'.$data->id.'">';
+            })
             ->addColumn('roles', function ($data) {
                 return $data->roles()->get()->implode('name', ', ');
             })
@@ -44,7 +53,8 @@ class UserDataTable extends DataTable
             })
             ->editColumn('updated_at', function ($data) {
                 return $data->updated_at->format('Y-m-d H:i:s');
-            });
+            })
+            ->rawColumns(['checkbox', 'status', 'action']);
     }
 
     /**
@@ -69,7 +79,7 @@ class UserDataTable extends DataTable
                     ->setTableId('user-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
-                    ->orderBy(1, 'ASC');
+                    ->orderBy(3, 'ASC');
     }
 
     /**
@@ -80,7 +90,8 @@ class UserDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            Column::make('DT_RowIndex')->title('No')->width(50),
+            Column::computed('checkbox')->title('<input type="checkbox" name="main_checkbox" id="delete-all" title="checkbox">'),
+            Column::make('DT_RowIndex')->searchable(false)->title('No')->width(50),
             Column::make('email'),
             Column::make('name'),
             Column::computed('roles'),

@@ -122,10 +122,24 @@ class NewsPostController extends Controller
 
     public function destroy(NewsPost $newsPost)
     {
-        $newsPost->delete();
         if ($newsPost->thumbnail) {
             Storage::delete($newsPost->thumbnail);
         }
+        $newsPost->delete();
+
+        return response()->json(['success' => 'Record has been deleted!']);
+    }
+
+    public function destroyChecked(Request $request)
+    {
+        $newsPosts = NewsPost::whereIn('id', $request->rowChecked);
+        foreach ($newsPosts as $newsPost) {
+            if ($newsPost->thumbnail) {
+                Storage::delete($newsPost->thumbnail);
+            }
+        }
+        $newsPosts->delete();
+
         return response()->json(['success' => 'Record has been deleted!']);
     }
 }

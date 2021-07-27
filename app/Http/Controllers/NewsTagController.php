@@ -101,4 +101,12 @@ class NewsTagController extends Controller
 
         return response()->json(['success' => 'Record has been deleted!']);
     }
+
+    public function destroyChecked(Request $request)
+    {
+        $newsTags = NewsTag::whereIn('id', $request->rowChecked);
+        $newsTags->delete();
+
+        return response()->json(['success' => 'Record has been deleted!']);
+    }
 }
