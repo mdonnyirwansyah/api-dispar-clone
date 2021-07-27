@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\NewsTag;
+use App\Models\Tag;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 
-class NewsTagSeeder extends Seeder
+class TagSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,7 +15,7 @@ class NewsTagSeeder extends Seeder
      */
     public function run()
     {
-        $newsTags = collect([
+        $tags = collect([
             'Travel',
             'Backpacker',
             'Summer',
@@ -27,10 +27,10 @@ class NewsTagSeeder extends Seeder
             'Covid-19'
         ]);
 
-        $newsTags->each(function ($newsTag) {
-            NewsTag::create([
-                'name' => $newsTag,
-                'slug' => Str::slug($newsTag)
+        $tags->each(function ($tag) {
+            Tag::create([
+                'name' => $tag,
+                'slug' => Str::slug($tag)
             ]);
         });
     }

@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class NewsTag extends Model
+class Tag extends Model
 {
     use HasFactory;
 
@@ -13,6 +13,6 @@ class NewsTag extends Model
 
     public function newsPosts()
     {
-        return $this->belongsToMany(NewsPost::class);
+        return $this->morphedByMany(NewsPost::class, 'taggable');
     }
 }

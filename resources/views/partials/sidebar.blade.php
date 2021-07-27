@@ -12,7 +12,14 @@
         <i class="fas fa-chart-pie"></i> <span>Dashboard</span>
       </a>
     </li>
-    <li class="menu-header">News</li>
+    <li class="menu-header">Contents</li>
+    @can('is-administrator')
+    <li class="{{ request()->is('tags') ? 'active' : '' }}">
+      <a class="nav-link" href="{{ route('tags.index') }}">
+        <i class="fas fa-tags"></i> <span>Tags</span>
+      </a>
+    </li>
+    @endcan
     <li class="nav-item dropdown {{ request()->is('news/*') ? 'active' : '' }}">
       <a href="#" class="nav-link has-dropdown" data-toggle="dropdown">
         <i class="fas fa-newspaper"></i> <span>News</span>
@@ -21,9 +28,6 @@
         @can('is-administrator')
         <li class="{{ request()->is('news/categories') ? 'active' : '' }}">
           <a class="nav-link" href="{{ route('news.categories.index') }}">Categories</a>
-        </li>
-        <li class="{{ request()->is('news/tags') ? 'active' : '' }}">
-            <a class="nav-link" href="{{ route('news.tags.index') }}">Tags</a>
         </li>
         @endcan
         <li class="{{ request()->is('news/posts*') ? 'active' : '' }}">

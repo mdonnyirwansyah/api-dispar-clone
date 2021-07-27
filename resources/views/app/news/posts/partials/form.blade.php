@@ -75,8 +75,8 @@
   <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Tags</label>
   <div class="col-sm-12 col-md-7">
     <select class="form-control select2" style="width: 100%" name="tags[]" id="tags" multiple>
-        @foreach ($newsTags as $newsTag)
-        <option value="{{ $newsTag->id }}" @isset($newsPost) @if(in_array($newsTag->id, $newsPost->newsTags->pluck('id')->toArray())) selected @endif @endisset>{{ $newsTag->name }}</option>
+        @foreach ($tags as $tag)
+        <option value="{{ $tag->id }}" @isset($newsPost) @if(in_array($tag->id, $newsPost->tags->pluck('id')->toArray())) selected @endif @endisset>{{ $tag->name }}</option>
         @endforeach
     </select>
   </div>

@@ -2,22 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\DataTables\NewsTagDataTable;
-use App\Models\NewsTag;
+use App\DataTables\TagDataTable;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
-class NewsTagController extends Controller
+class TagController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(NewsTagDataTable $dataTable)
+    public function index(TagDataTable $dataTable)
     {
-        return $dataTable->render('app.news.tags.index');
+        return $dataTable->render('app.tags.index');
     }
 
     /**
@@ -27,7 +27,7 @@ class NewsTagController extends Controller
      */
     public function create()
     {
-        return response()->json(['success' => view('app.news.tags.create')->render()]);
+        return response()->json(['success' => view('app.tags.create')->render()]);
     }
 
     /**
@@ -39,14 +39,14 @@ class NewsTagController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|unique:news_tags',
+            'name' => 'required|unique:tags',
         ]);
 
         if ($validator->passes()) {
-            $newsTag = new NewsTag();
-            $newsTag->name = $request->name;
-            $newsTag->slug = Str::slug($request->name);
-            $newsTag->save();
+            $tag = new Tag();
+            $tag->name = $request->name;
+            $tag->slug = Str::slug($request->name);
+            $tag->save();
 
             return response()->json(['success' => 'New record has been created!']);
         }
@@ -57,31 +57,31 @@ class NewsTagController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\NewsTag  $newsTag
+     * @param  \App\Models\Tag  $tag
      * @return \Illuminate\Http\Response
      */
-    public function edit(NewsTag $newsTag)
+    public function edit(Tag $tag)
     {
-        return response()->json(['success' => view('app.news.tags.edit', compact('newsTag'))->render()]);
+        return response()->json(['success' => view('app.tags.edit', compact('tag'))->render()]);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\NewsTag  $newsTag
+     * @param  \App\Models\Tag  $tag
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, NewsTag $newsTag)
+    public function update(Request $request, Tag $tag)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|unique:news_tags,name,' .$newsTag->id,
+            'name' => 'required|unique:tags,name,' .$tag->id,
         ]);
 
         if ($validator->passes()) {
-            $newsTag->name = $request->name;
-            $newsTag->slug = Str::slug($request->name);
-            $newsTag->save();
+            $tag->name = $request->name;
+            $tag->slug = Str::slug($request->name);
+            $tag->save();
 
             return response()->json(['success' => 'Record has been updated!']);
         }
@@ -92,20 +92,20 @@ class NewsTagController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\NewsTag  $newsTag
+     * @param  \App\Models\Tag  $tag
      * @return \Illuminate\Http\Response
      */
-    public function destroy(NewsTag $newsTag)
+    public function destroy(Tag $tag)
     {
-        $newsTag->delete();
+        $tag->delete();
 
         return response()->json(['success' => 'Record has been deleted!']);
     }
 
     public function destroyChecked(Request $request)
     {
-        $newsTags = NewsTag::whereIn('id', $request->rowChecked);
-        $newsTags->delete();
+        $tags = Tag::whereIn('id', $request->rowChecked);
+        $tags->delete();
 
         return response()->json(['success' => 'Record has been deleted!']);
     }

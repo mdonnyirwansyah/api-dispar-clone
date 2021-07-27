@@ -16,9 +16,9 @@ class NewsPost extends Model
         return $this->belongsTo(NewsCategory::class);
     }
 
-    public function newsTags()
+    public function tags()
     {
-        return $this->belongsToMany(NewsTag::class);
+        return $this->morphToMany(Tag::class, 'taggable');
     }
 
     public function author()

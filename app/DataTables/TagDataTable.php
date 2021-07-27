@@ -2,11 +2,11 @@
 
 namespace App\DataTables;
 
-use App\Models\NewsTag;
+use App\Models\Tag;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Services\DataTable;
 
-class NewsTagDataTable extends DataTable
+class TagDataTable extends DataTable
 {
     /**
      * Build DataTable class.
@@ -24,10 +24,10 @@ class NewsTagDataTable extends DataTable
             })
             ->addColumn('action', function ($data) {
                 return '
-                    <button data-toggle="tooltip" data-placement="top" title="Edit" onClick="editRecord('.$data->id.')" id="edit-'.$data->id.'" edit-route="'.route('news.tags.edit', $data).'" class="btn btn-icon">
+                    <button data-toggle="tooltip" data-placement="top" title="Edit" onClick="editRecord('.$data->id.')" id="edit-'.$data->id.'" edit-route="'.route('tags.edit', $data).'" class="btn btn-icon">
                         <i class="fas fa-pen text-info"></i>
                     </button>
-                    <button data-toggle="tooltip" data-placement="top" title="Delete" onClick="deleteRecord('.$data->id.')" id="delete-'.$data->id.'" delete-route="'.route('news.tags.destroy', $data).'" class="btn btn-icon">
+                    <button data-toggle="tooltip" data-placement="top" title="Delete" onClick="deleteRecord('.$data->id.')" id="delete-'.$data->id.'" delete-route="'.route('tags.destroy', $data).'" class="btn btn-icon">
                         <i class="fas fa-trash text-danger"></i>
                     </button>
                 ';
@@ -44,10 +44,10 @@ class NewsTagDataTable extends DataTable
     /**
      * Get query source of dataTable.
      *
-     * @param \App\Models\NewsTag $model
+     * @param \App\Models\Tag $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(NewsTag $model)
+    public function query(Tag $model)
     {
         return $model->newQuery();
     }
@@ -60,7 +60,7 @@ class NewsTagDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-                    ->setTableId('newstag-table')
+                    ->setTableId('tag-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
                     ->orderBy(2, 'ASC');
@@ -90,6 +90,6 @@ class NewsTagDataTable extends DataTable
      */
     protected function filename()
     {
-        return 'NewsTag_' . date('YmdHis');
+        return 'Tag_' . date('YmdHis');
     }
 }

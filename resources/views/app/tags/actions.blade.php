@@ -57,7 +57,7 @@
                         $('input[name="main_checkbox"]').prop('checked', false);
                         $('#btn-delete-checkbox').hide();
                         $('#btn-delete-checkbox').attr('disabled', false);
-                        $('#newstag-table').DataTable().draw();
+                        $('#tag-table').DataTable().draw();
                         toastr.success(response.success, 'Congratulations,');
                     },
                 });
@@ -67,7 +67,7 @@
         });
     });
 
-    $(document).on('change', 'select[name="newstag-table_length"]', function () {
+    $(document).on('change', 'select[name="tag-table_length"]', function () {
         $('input[name="row_checkbox"]').each(function () {
             this.checked = false;
         });
@@ -109,7 +109,7 @@
     }
 
     function createRecord() {
-        $.get('{{ route("news.tags.create") }}', function (response) {
+        $.get('{{ route("tags.create") }}', function (response) {
             $('#view-modal').html(response.success).show();
             $('#modal-form').modal('show');
 
@@ -128,7 +128,7 @@
                     },
                     success: function (response) {
                         if(response.success){
-                            $('#newstag-table').DataTable().draw();
+                            $('#tag-table').DataTable().draw();
                             $('#modal-form').modal('hide');
                             toastr.success(response.success, 'Congratulations,');
                         }else{
@@ -166,7 +166,7 @@
                     },
                     success: function (response) {
                         if(response.success){
-                            $('#newstag-table').DataTable().draw();
+                            $('#tag-table').DataTable().draw();
                             $('#modal-form').modal('hide');
                             toastr.success(response.success, 'Congratulations,');
                         }else{
@@ -199,7 +199,7 @@
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
                     success: function (response) {
-                        $('#newstag-table').DataTable().draw();
+                        $('#tag-table').DataTable().draw();
                         toastr.success(response.success, 'Congratulations,');
                     },
                 });

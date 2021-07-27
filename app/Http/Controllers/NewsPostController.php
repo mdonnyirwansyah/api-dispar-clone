@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\DataTables\NewsPostDataTable;
 use App\Models\NewsCategory;
 use App\Models\NewsPost;
-use App\Models\NewsTag;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -27,9 +27,9 @@ class NewsPostController extends Controller
     public function create()
     {
         $newsCategories = NewsCategory::all();
-        $newsTags = NewsTag::all();
+        $tags = Tag::all();
 
-        return view('app.news.posts.create', compact('newsCategories', 'newsTags'));
+        return view('app.news.posts.create', compact('newsCategories', 'tags'));
     }
 
     public function store(Request $request)
@@ -54,7 +54,7 @@ class NewsPostController extends Controller
             $newsPost->save();
 
             if ($request->tags) {
-                $newsPost->newsTags()->sync($request->tags);
+                $newsPost->tags()->sync($request->tags);
             }
 
             return response()->json(['success' => 'New record has been created!']);
@@ -66,9 +66,9 @@ class NewsPostController extends Controller
     public function edit(NewsPost $newsPost)
     {
         $newsCategories = NewsCategory::all();
-        $newsTags = NewsTag::all();
+        $tags = Tag::all();
 
-        return view('app.news.posts.edit', compact('newsCategories', 'newsTags', 'newsPost'));
+        return view('app.news.posts.edit', compact('newsCategories', 'tags', 'newsPost'));
     }
 
     public function update(Request $request, NewsPost $newsPost)
@@ -111,7 +111,7 @@ class NewsPostController extends Controller
             $newsPost->save();
 
             if ($request->tags) {
-                $newsPost->newsTags()->sync($request->tags);
+                $newsPost->tags()->sync($request->tags);
             }
 
             return response()->json(['success' => 'Record has been updated!']);

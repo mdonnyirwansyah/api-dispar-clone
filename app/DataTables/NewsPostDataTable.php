@@ -28,7 +28,7 @@ class NewsPostDataTable extends DataTable
                 return $data->newsCategory->name;
             })
             ->addColumn('tags', function ($data) {
-                return $data->newsTags()->get()->implode('name', ', ');
+                return $data->tags()->get()->implode('name', ', ');
             })
             ->addColumn('author', function ($data) {
                 return $data->author->name;
@@ -76,7 +76,13 @@ class NewsPostDataTable extends DataTable
      */
     public function query(NewsPost $model)
     {
-        if (Gate::allows('is-administrator')) {
+        if (Gate::allows(['is-administrator', 'is-author', 'is-editor'])) {
+            return $model->where('author_id', Auth::user()->id)->orWhereIn('editor_id', [Auth::user()->id, null])->orWhereIn('status', ['Published', 'Pending']);
+        } elseif (Gate::allows(['is-administrator', 'is-author'])) {
+            return $model->where('author_id', Auth::user()->id)->orWhereIn('status', ['Published', 'Pending']);
+        } elseif (Gate::allows(['is-administrator', 'is-editor'])) {
+            return $model->whereIn('editor_id', [Auth::user()->id, null])->orWhereIn('status', ['Published', 'Pending']);
+        } elseif (Gate::allows('is-administrator')) {
             return $model->whereIn('status', ['Published', 'Pending']);
         } elseif (Gate::allows('is-author')) {
             return $model->where('author_id', Auth::user()->id);
