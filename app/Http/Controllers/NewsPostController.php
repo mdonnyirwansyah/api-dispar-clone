@@ -3,17 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\DataTables\NewsPostDataTable;
+use App\Http\Resources\NewsPostResource;
 use App\Models\NewsCategory;
 use App\Models\NewsPost;
 use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Symfony\Component\HttpFoundation\Response;
 
 class NewsPostController extends Controller
 {
+    // WEB
     public function index(NewsPostDataTable $dataTable)
     {
         return $dataTable->render('app.news.posts.index');
@@ -50,6 +54,7 @@ class NewsPostController extends Controller
             $newsPost->source = $request->source;
             $newsPost->author_id = Auth::user()->id;
             $newsPost->thumbnail = $request->file('thumbnail')->store('images/news');
+            $newsPost->status = $request->status;
             $newsPost->slug = Str::slug($request->title);
             $newsPost->save();
 
@@ -73,6 +78,7 @@ class NewsPostController extends Controller
 
     public function update(Request $request, NewsPost $newsPost)
     {
+
         $validator = Validator::make($request->all(), [
             'title' => 'required|unique:news_posts,title,' .$newsPost->id,
             'category' => 'required',
@@ -80,44 +86,55 @@ class NewsPostController extends Controller
             'source' => 'required',
             'thumbnail' => 'image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
-
-        if ($request->file('thumbnail')) {
-            if ($newsPost->thumbnail) {
-                Storage::delete($newsPost->thumbnail);
+        if (Gate::allows('is-editor')) {
+            if ($request->file('thumbnail')) {
+                if ($newsPost->thumbnail) {
+                    Storage::delete($newsPost->thumbnail);
+                }
+                $thumbnail = $request->file('thumbnail')->store('images/news');
+            } elseif ($newsPost->thumbnail) {
+                $thumbnail = $newsPost->thumbnail;
+            } else {
+                $thumbnail = null;
             }
-            $thumbnail = $request->file('thumbnail')->store('images/news');
-        } elseif ($newsPost->thumbnail) {
-            $thumbnail = $newsPost->thumbnail;
-        } else {
-            $thumbnail = null;
-        }
 
-        if ($newsPost->editor_id) {
-            $editor = $newsPost->editor_id;
-        } else {
-            $editor = Auth::user()->id;
-        }
+            if ($request->title_en || $request->content_en ) {
+                if ($newsPost->editor_id) {
+                    $editor = $newsPost->editor_id;
+                } else {
+                    $editor = Auth::user()->id;
+                }
+            } else {
+                $editor = null;
+            }
 
-        if ($validator->passes()) {
-            $newsPost->title = $request->title;
-            $newsPost->title_en = $request->title_en;
-            $newsPost->news_category_id = $request->category;
-            $newsPost->content = $request->content;
-            $newsPost->content_en = $request->content_en;
-            $newsPost->source = $request->source;
-            $newsPost->editor_id = $editor;
-            $newsPost->thumbnail = $thumbnail;
-            $newsPost->slug = Str::slug($request->title);
+            if ($validator->passes()) {
+                $newsPost->title = $request->title;
+                $newsPost->title_en = $request->title_en;
+                $newsPost->news_category_id = $request->category;
+                $newsPost->content = $request->content;
+                $newsPost->content_en = $request->content_en;
+                $newsPost->source = $request->source;
+                $newsPost->editor_id = $editor;
+                $newsPost->thumbnail = $thumbnail;
+                $newsPost->status = $request->status;
+                $newsPost->slug = Str::slug($request->title);
+                $newsPost->save();
+
+                if ($request->tags) {
+                    $newsPost->tags()->sync($request->tags);
+                }
+
+                return response()->json(['success' => 'Record has been updated!']);
+            }
+
+            return response()->json(['error' => $validator->errors()]);
+        } else {
+            $newsPost->status = $request->status;
             $newsPost->save();
-
-            if ($request->tags) {
-                $newsPost->tags()->sync($request->tags);
-            }
 
             return response()->json(['success' => 'Record has been updated!']);
         }
-
-        return response()->json(['error' => $validator->errors()]);
     }
 
     public function destroy(NewsPost $newsPost)
@@ -141,5 +158,49 @@ class NewsPostController extends Controller
         $newsPosts->delete();
 
         return response()->json(['success' => 'Record has been deleted!']);
+    }
+
+    // API
+    public function get(Request $request)
+    {
+        $currentPage = $request->current_page ?? 1;
+        $perPage = $request->per_page ?? 5;
+        $total = NewsPost::where('status', 'Published')->count();
+        $newsPosts = NewsPost::where('status', 'Published')->orderBy('published_at', 'DESC')->limit(intval($perPage))->offset((intval($currentPage) - 1) * intval($perPage))->get();
+
+        $response = [
+            'message' => 'List of news post order by published',
+            'data' => NewsPostResource::collection($newsPosts),
+            'current_page' => intval($currentPage),
+            'per_page' => intval($perPage),
+            'total' => $total
+        ];
+
+        return response()->json($response, Response::HTTP_OK);
+    }
+
+    public function show($slug)
+    {
+        $newsPost = NewsPost::where('slug', $slug)->where('status', 'Published')->first();
+
+        if ($newsPost) {
+            $viewer = $newsPost->viewer + 1;
+
+            $newsPost->viewer = $viewer;
+            $newsPost->save();
+
+            $response = [
+                'message' => 'Detail of news post resource',
+                'data' => new NewsPostResource($newsPost)
+            ];
+
+            return response()->json($response, Response::HTTP_OK);
+        } else {
+            $response = [
+                'message' => 'Object not found!',
+            ];
+
+            return response()->json($response, Response::HTTP_NOT_FOUND);
+        }
     }
 }
